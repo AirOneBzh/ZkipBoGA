@@ -1,6 +1,7 @@
 /// module jeu
 // permet de créer un menu un lecteur de manuel selectionner nb joueurs
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <MLV/MLV_all.h>
@@ -13,8 +14,8 @@ typedef struct {
 } joueurs ;
 
 typedef struct {
-  char nom[30];     // nom des menus
-  int nbj;          // nombre de joueurs
+  char nom[30];    //nom du Jeu
+  int nbj;
 
 } options;
 
@@ -46,6 +47,10 @@ void menu (int nbmenu,options o){ // menuc nombre d'entrees, menuv titre menu
   MLV_wait_mouse(&x,&y);
   MLV_free_window();
 
+  MLV_actualise_window();
+  MLV_wait_mouse(&x,&y);
+  MLV_free_window();
+
 }
 
 int fenetre (int l,int h){
@@ -58,8 +63,10 @@ int fenetre (int l,int h){
 } // h hauteur , l largeur
 
 
-
 int main (int argc, char *argv[]){
-  lchar
+  options o;
+  sprintf(o.nom,"ZkipBoGA");
+  sprintf()
+  menu(2,o);
   return 1;
 }
