@@ -1,21 +1,22 @@
 /// module jeu
-// permet de créer un menu un lecteur de manuel selectionner nb joueurs 
+// permet de créer un menu un lecteur de manuel selectionner nb joueurs
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <MLV/MLV_all.h>
 
-typedef struct {
-  char noma[30];
-  int ida;
-  char nomb[30];
-  int idb;
-} joueurs ;
+typedef enum {J1,J2,J3,J4} num_joueurs;
 
 typedef struct {
   char nom[30];
+  num_joueurs n;
+} joueurs ;
+
+typedef struct {
+  char nom[30];    //nom du Jeu
   int nbj;
-  
+
 } options;
 
 void menu (int nbmenu,options o){ // menuc nombre d'entrees, menuv titre menu
@@ -41,16 +42,20 @@ void menu (int nbmenu,options o){ // menuc nombre d'entrees, menuv titre menu
     MLV_draw_filled_rectangle(40,140+100*c,720,80,MLV_COLOR_WHITE);
     MLV_draw_text_with_font(80,140+100*c,o[c].nom,font,fond);
   }
-  
+
   MLV_actualise_window();
   MLV_wait_mouse(&x,&y);
   MLV_free_window();
-    
+
+  MLV_actualise_window();
+  MLV_wait_mouse(&x,&y);
+  MLV_free_window();
+
 }
 
 int fenetre (int l,int h){
   MLV_create_window("Jeux zngAC","Jeux zngAC",l,h);
-  
+
   MLV_actualise_window();
   MLV_wait_seconds(10);
   MLV_free_window();
@@ -58,8 +63,10 @@ int fenetre (int l,int h){
 } // h hauteur , l largeur
 
 
-  
 int main (int argc, char *argv[]){
-  lchar
+  options o;
+  sprintf(o.nom,"ZkipBoGA");
+  sprintf()
+  menu(2,o);
   return 1;
 }
