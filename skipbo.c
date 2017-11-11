@@ -2,5 +2,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <.>
 #include <string.h>
+#include "jeu.h"
+
+int main(int argc,char **argv){
+  options o;
+  menu(1,o);
+  return 1;
+}
