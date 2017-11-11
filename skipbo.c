@@ -6,7 +6,7 @@
 #include "jeu.h"
 
 int main(int argc,char **argv){
-  options o;
-  menu(1,o);
+
+  fenetre(100,500);
   return 1;
 }
