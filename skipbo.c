@@ -6,7 +6,8 @@
 #include "jeu.h"
 
 int main(int argc,char **argv){
-
-  fenetre(100,500);
+  options o;
+  sprintf(o.nom[0],"ZkipBoGA");
+  menufen(2,o);
   return 1;
 }
