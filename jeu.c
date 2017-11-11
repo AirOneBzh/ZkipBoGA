@@ -19,8 +19,8 @@ void menufen(int nbmenu,options o){
   MLV_Font* font=MLV_load_font("pricedown.ttf",60);
   MLV_Font* devil60=MLV_load_font("Devil Breeze Bold.ttf",60);
   MLV_Font* devil80=MLV_load_font("Devil Breeze Bold.ttf",90);
-
-  sprintf(o.nom[0],"Lancer %s",o.nom[0]);
+  sprintf(titre,"%s",o.nom[0])
+  sprintf(o.nom[0],"Lancer %s",titre);
   sprintf(o.nom[1],"Options");
   sprintf(o.nom[2],"Bots");
   nbmenu+=2;
