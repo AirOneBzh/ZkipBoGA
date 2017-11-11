@@ -43,7 +43,7 @@ void menufen(int nbmenu,options o){
 }
 
 int fenetre (int l,int h){
-  MLV_create_window("Jeux zngAC","Jeux zngAC",l,h);
+  MLV_create_window("ZkipBoGA","ZkipBoGA",l,h);
 
   MLV_actualise_window();
   MLV_wait_seconds(10);
