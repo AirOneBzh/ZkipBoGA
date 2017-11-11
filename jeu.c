@@ -16,7 +16,7 @@ typedef struct {
 typedef struct {
   char nom[30];    //nom du Jeu
   int nbj;
-
+  int ia[4];       // ia[0] nb, ia[1,2,3]=1,2,3 niveau de chacune ia
 } options;
 
 void menu (int nbmenu,options o){ // menuc nombre d'entrees, menuv titre menu
@@ -40,7 +40,7 @@ void menu (int nbmenu,options o){ // menuc nombre d'entrees, menuv titre menu
   MLV_draw_text_with_font(683,10,"a",devil80,MLV_COLOR_BLUE);           // AirOne
   for(c=0;c<nbmenu;c++){
     MLV_draw_filled_rectangle(40,140+100*c,720,80,MLV_COLOR_WHITE);
-    MLV_draw_text_with_font(80,140+100*c,o[c].nom,font,fond);
+    MLV_draw_text_with_font(80,140+100*c,"options",font,fond);
   }
 
   MLV_actualise_window();
@@ -66,7 +66,6 @@ int fenetre (int l,int h){
 int main (int argc, char *argv[]){
   options o;
   sprintf(o.nom,"ZkipBoGA");
-  sprintf()
   menu(2,o);
   return 1;
 }
