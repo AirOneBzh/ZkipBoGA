@@ -32,7 +32,7 @@ void menufen(int nbmenu,options o){
   MLV_draw_text_with_font(683,10,"a",devil80,MLV_COLOR_BLUE);           // AirOne
   for(c=0;c<nbmenu;c++){
     MLV_draw_filled_rectangle(40,140+100*c,720,80,MLV_COLOR_WHITE);
-    MLV_draw_text_with_font(80,140+100*c,o.nom[1],font,fond);
+    MLV_draw_text_with_font(80,140+100*c,o.nom[c],font,fond);
   }
 
   MLV_actualise_window();
