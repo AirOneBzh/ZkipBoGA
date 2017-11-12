@@ -36,11 +36,13 @@ int menufen(int nbmenu,options o){
   }
 
   MLV_actualise_window();
-
-  MLV_wait_mouse(&x,&y);
-  system("less README.md");
-  MLV_wait_mouse(&x,&y);
-
+  while(x<40 || y<240 || x>760 || y>320){
+    MLV_wait_mouse(&x,&y);
+    printf("x%d y%d\n",x,y);
+    if(x>40 && y>240 && x<760 && y<320){
+      system("less README.md");
+    }
+  }
   MLV_free_window();
   return 1;
 

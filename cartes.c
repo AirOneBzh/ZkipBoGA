@@ -4,38 +4,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "cartes.h"
 
-typedef struct {
-  int valeur;
-  char ens[20];         // enseigne (couleur) ou permet de différencier cartes
-} carte;
-
-typedef struct {
-  carte c[200];
-  int n;           // taille réelle paquet
-} paquet;
-
-paquet creer_paquet_skipbo(){
+paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[],int nbspe){
   paquet p;
   int i,j,k;
   char ens[20];
-  p.n=152;
-  for(i=0;i<12;i++){
-    sprintf(ens,"%d",i+1);
-    for(j=0;j<12;j++){              
-      p.c[i*12+j].valeur=j+1;
-      strcpy(p.c[i*12+j].ens,ens);
+  p.n=nbca;
+
+  for(i=0;i<nbens;i++){
+    sprintf(ens,"%s",lcens[i]);
+    for(j=0;j<nbcaens;j++){
+      p.c[i*nbcaens+j].valeur=j+1;    // valeur > int au besoin modifié par le prog
+      strcpy(p.c[i*nbcaens+j].ens,ens);
     }
   }
-  
-  for(k=i*12+j;k<i*12+j+18;k++){
-    p.c[k].valeur=0;                 // 0 = joker
-    strcpy(p.c[k].ens,"j");
+
+  for(k=nbcaens*nbens;k<nbca;k++){
+    p.c[k].valeur=k-nbcaens*nbens+1;                 // 0 = joker
+    strcpy(p.c[k].ens,cspe);
   }
   return p;
-}
-
-int main(){
-  paquet p = creer_paquet_skipbo();
-  int i,j; 
 }

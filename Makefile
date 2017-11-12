@@ -8,11 +8,14 @@ LDLIBS = `pkg-config --libs-only-l MLV`
 prog: skipbo
 	-rm -rf *.o
 
-skipbo: skipbo.o jeu.o
-	$(CC) skipbo.o jeu.o $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o skipbo
+skipbo: skipbo.o jeu.o cartes.o
+	$(CC) skipbo.o jeu.o cartes.o $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o skipbo
 
 skipbo.o: skipbo.c
 	$(CC) -c skipbo.c $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+
+cartes.o: cartes.c cartes.h
+	$(CC) -c cartes.c $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 jeu.o: jeu.c jeu.h
 	$(CC) -c jeu.c $(CFLAGS) $(LDFLAGS) $(LDLIBS)
