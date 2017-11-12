@@ -8,7 +8,7 @@
 #include "jeu.h"
 
 // menuc nombre d'entrees, menuv titre menu
-void menufen(int nbmenu,options o){
+int menufen(int nbmenu,options o){
   int c,x,y;
   char titre[30];
   MLV_create_window("Menu","Menu",800,900);
@@ -31,15 +31,18 @@ void menufen(int nbmenu,options o){
   MLV_draw_text_with_font(640,10,"c",devil80,MLV_COLOR_DARKGREEN);      // Cesarus
   MLV_draw_text_with_font(683,10,"a",devil80,MLV_COLOR_BLUE);           // AirOne
   for(c=0;c<nbmenu;c++){
-    printf("c%d",nbmenu);
     MLV_draw_filled_rectangle(40,140+100*c,720,80,MLV_COLOR_WHITE);
     MLV_draw_text_with_font(80,140+100*c,o.nom[c],font,fond);
   }
 
   MLV_actualise_window();
-  MLV_wait_mouse(&x,&y);
-  MLV_free_window();
 
+  MLV_wait_mouse(&x,&y);
+  system("less README.md");
+  MLV_wait_mouse(&x,&y);
+
+  MLV_free_window();
+  return 1;
 
 }
 
