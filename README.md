@@ -26,4 +26,5 @@ Dans la fenêtre qui s'ouvre choisissez les options qui vous plaisent puis lance
 
 # Auteurs
 [Césarus](https://github.com/Riosti)  
-[AirOne](https://github.com/lce987) 
+[AirOneBzh](https://github.com/AirOneBzh)  
+@AirOneBzh
