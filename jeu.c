@@ -13,16 +13,16 @@ void menufen(int nbmenu,options o){
   char titre[30];
   MLV_create_window("Menu","Menu",800,900);
 
-  MLV_Image* header = MLV_load_image("header.png");
+  MLV_Image* header = MLV_load_image("assets/header.png");
   MLV_resize_image(header,100,100);
   MLV_Color fond = MLV_rgba(40,40,40,255);
-  MLV_Font* font=MLV_load_font("pricedown.ttf",60);
-  MLV_Font* devil60=MLV_load_font("Devil Breeze Bold.ttf",60);
-  MLV_Font* devil80=MLV_load_font("Devil Breeze Bold.ttf",90);
-  sprintf(titre,"%s",o.nom[0])
+  MLV_Font* font=MLV_load_font("assets/pricedown.ttf",60);
+  MLV_Font* devil60=MLV_load_font("assets/Devil Breeze Bold.ttf",60);
+  MLV_Font* devil80=MLV_load_font("assets/Devil Breeze Bold.ttf",90);
+  sprintf(titre,"%s",o.nom[0]);
   sprintf(o.nom[0],"Lancer %s",titre);
-  sprintf(o.nom[1],"Options");
-  sprintf(o.nom[2],"Bots");
+  sprintf(o.nom[nbmenu],"Options");
+  sprintf(o.nom[nbmenu+1],"Bots");
   nbmenu+=2;
   MLV_clear_window(fond);
   MLV_draw_image(header,30,15);
@@ -31,6 +31,7 @@ void menufen(int nbmenu,options o){
   MLV_draw_text_with_font(640,10,"c",devil80,MLV_COLOR_DARKGREEN);      // Cesarus
   MLV_draw_text_with_font(683,10,"a",devil80,MLV_COLOR_BLUE);           // AirOne
   for(c=0;c<nbmenu;c++){
+    printf("c%d",nbmenu);
     MLV_draw_filled_rectangle(40,140+100*c,720,80,MLV_COLOR_WHITE);
     MLV_draw_text_with_font(80,140+100*c,o.nom[c],font,fond);
   }
