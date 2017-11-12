@@ -25,5 +25,5 @@ skipbo
 Dans la fenêtre qui s'ouvre choisissez les options qui vous plaisent puis lancer le jeu avec le premier bouton du menu.
 
 # Auteurs
-[Césarus](https://github.com/Riosti)
+[Césarus](https://github.com/Riosti)  
 [AirOne](https://github.com/lce987) 
