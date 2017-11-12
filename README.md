@@ -1,4 +1,4 @@
-# [ZkipBoGA](https://github.com/lce987/ZkipBoGA)
+[ZkipBoGA](https://github.com/lce987/ZkipBoGA)
 Le jeu de cartes skip bo par la team zanga en c
 ## Composition du jeu
 12 paquets de 12 cartes allant de 1 à 12 et 18 cartes jokers "skipbo"
