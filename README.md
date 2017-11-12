@@ -22,4 +22,4 @@ Vous terminez votre tour en posant une carte dans une de vos piles de défausse.
 make
 skipbo
 ```
-Dans la fenêtre qui s'ouvre choisissez les options qui vous plaisent,
+Dans la fenêtre qui s'ouvre choisissez les options qui vous plaisent puis lancer le jeu avec le premier bouton du menu.
