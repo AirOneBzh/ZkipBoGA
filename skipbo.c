@@ -10,6 +10,7 @@
 // pile milieu (4)
 // pile défausse (5 par personne)
 // tas principal (1 par personne)
+// main
 
 ///// actions
 // pioche
@@ -35,6 +36,7 @@ int main(int argc,char **argv){
   sprintf(o.nom[0],"ZkipBoGA");
   paquet p;
   char lcens[30][5];
+  for
   p=creer_paquet(162,12,lcens,12,"Skipbo",18);
   menufen(2,o);
   for(i=0;i<162;i++){
