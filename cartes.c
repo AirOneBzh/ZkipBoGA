@@ -21,7 +21,7 @@ paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[]
   }
 
   for(k=nbcaens*nbens;k<nbca;k++){
-    p.c[k].valeur=k-nbcaens*nbens+1;                 // 0 = joker
+    p.c[k].valeur=0;                 // 0 = joker
     strcpy(p.c[k].ens,cspe);
   }
   return p;
