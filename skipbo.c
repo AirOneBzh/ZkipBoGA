@@ -36,12 +36,10 @@ int main(int argc,char **argv){
   sprintf(o.nom[0],"ZkipBoGA");
   paquet p;
   char lcens[30][5];
-  for
   p=creer_paquet(162,12,lcens,12,"Skipbo",18);
   menufen(2,o);
   for(i=0;i<162;i++){
     printf("%d %s\n",p.c[i].valeur,p.c[i].ens);
   }
-
   return 1;
 }

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "cartes.h"
-r lcens[30][]
+
 paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[],int nbspe){
   paquet p;
   int i,j,k;
