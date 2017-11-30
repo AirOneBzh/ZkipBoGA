@@ -40,7 +40,7 @@ int menufen(int nbmenu,options o){
     MLV_wait_mouse(&x,&y);
     printf("x%d y%d\n",x,y);
     if(x>40 && y>240 && x<760 && y<320){
-      system("less README.md");
+      printf("README\n"); 
     }
   }
   MLV_free_window();

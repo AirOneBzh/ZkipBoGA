@@ -26,3 +26,12 @@ paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[]
   }
   return p;
 }
+
+int piocher(paquet pioche,paquet main,int n){
+  while(main.n<n){
+    //supp_carte(pioche)
+    printf("e");
+  }
+  return 1;
+  
+} // donne cartes (max n )

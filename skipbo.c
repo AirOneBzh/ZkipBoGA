@@ -23,7 +23,7 @@
 // faire une fonction de détection clic souris (renvoi int de zone de clic)
 // une qui actualise les zones de clic dispo   (dans une liste)
 
-int piocher(); // donne cartes (max 5 par personne réelle (si 3 joueurs ne donne pas de cartes à J4))
+
 int selcase(); // si case contient une carte et aucune carte en main alors selection de la carte
 int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'une carte
 int mouse_to_zone(); // transforme coords souris en zone d'une pile de jeu
@@ -34,12 +34,19 @@ int main(int argc,char **argv){
   //paquet pioche,pile[4],def[5][4],tas[4];
   int i;
   sprintf(o.nom[0],"ZkipBoGA");
+  sprintf(o.nom[1],"Quitter");
   paquet p;
   char lcens[30][5];
-  p=creer_paquet(162,12,lcens,12,"Skipbo",18);
-  menufen(2,o);
+  for(i=0;i<12;i++){
+    sprintf(lcens[i],"%d",i+1);
+  }
+  p=creer_paquet(162,12,lcens,12,"S",18);
+  menufen(3,o);
   for(i=0;i<162;i++){
     printf("%d %s\n",p.c[i].valeur,p.c[i].ens);
   }
+  fenetre(500,500);
+  MLV_clear_window(MLV_rgba(38,133,52,255));
+  MLV_draw_rectangle
   return 1;
 }

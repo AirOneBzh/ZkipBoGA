@@ -1,9 +1,9 @@
-typedef enum {J1,J2,J3,J4} num_joueurs;
+typedef enum {J1,J2,J3,J4} num_joueur;
 
 typedef struct {
   char nom[30];
-  num_joueurs n;
-} joueurs ;
+  num_joueur n;
+} joueur ;
 
 typedef struct {
   char nom[30][30];    //nom du Jeu
