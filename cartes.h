@@ -10,9 +10,13 @@ typedef struct{
 
 typedef struct{
   carte c[12];
-  int t;
+  int nb;
 } serie;  // la serie au milieu de 1 a 12
 
+typedef struct{
+  carte c[15];
+  int nb;
+}pile;
 
 typedef struct {
   carte c[400];
