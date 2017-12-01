@@ -8,8 +8,8 @@ LDLIBS = `pkg-config --libs-only-l MLV`
 prog: skipbo
 	-rm -rf *.o
 
-skipbo: skipbo.o jeu.o cartes.o
-	$(CC) skipbo.o jeu.o cartes.o $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o skipbo
+skipbo: skipbo.o jeu.o cartes.o interface.o
+	$(CC) skipbo.o jeu.o cartes.o interface.o $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o skipbo
 
 skipbo.o: skipbo.c
 	$(CC) -c skipbo.c $(CFLAGS) $(LDFLAGS) $(LDLIBS)
@@ -19,6 +19,9 @@ cartes.o: cartes.c cartes.h
 
 jeu.o: jeu.c jeu.h
 	$(CC) -c jeu.c $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+
+interface.o: interface.c interface.h
+		$(CC) -c interface.c $(CFLAGS) $(LDFLAGS) $(LDLIBS)
 
 clean:
 	-rm -rf *.o skipbo

@@ -1,9 +1,19 @@
+// définition de la structure du jeu de SkipBo
+#include "cartes.h"
 typedef enum {J1,J2,J3,J4} num_joueur;
 
 typedef struct {
   char nom[30];
   num_joueur n;
+  stock tas;
+  pile defausse[5];   // def[i].nb=
+  carte main[6];     // main[0].val=nb cartes en main
 } joueur ;
+
+typedef struct{
+  paquet pioche;
+  serie m[4];
+} milieu;
 
 typedef struct {
   char nom[30][30];    //nom du Jeu
