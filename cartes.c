@@ -27,10 +27,20 @@ paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[]
   return p;
 }
 
+int depl_carte(int d[],int a[]){
+  int i;
+  a[n_a]=d[0];
+  for(i=0;i<n_d-1;i++){
+
+  }
+}
+
+
+
 int piocher(paquet pioche,joueur j,int n){
+  // son_dist
   while(j.main[0].val<n){
-    //supp_carte(pioche)
-    printf("e");
+    // depl_carte pioche.carte[] main[]
   }
   return 1;
 

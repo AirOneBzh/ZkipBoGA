@@ -8,7 +8,19 @@
 #include <MLV/MLV_all.h>
 
 int aff_carte(carte c,int x,int y){
-  MLV_draw_rectangle(x*80,y*80,80,80,MLV_COLOR_RED);
+  MLV_Image* img;
+  int taille = MLV_get_window_height()/11;
+  char path_img[10];
+  if(c.val==0){
+    sprintf(path_img,"assets/0.png");
+  }
+  else{
+    sprintf(path_img,"assets/0.png");
+  }
+  img=MLV_load_image(path_img);
+  MLV_resize_image(img,taille,taille);
+  MLV_draw_image(img,x*taille,y*taille);
+  MLV_draw_rectangle(x*taille-taille*0.1,y*taille-taille*0.1,taille+taille*0.5,taille+taille*0.5,MLV_COLOR_RED);
   return 1;
 }
 
@@ -29,12 +41,12 @@ int aff_serie(serie s,int x){
 }
 
 /*int aff_milieu(milieu m){
-  int i;
-  for(i=3;i<10;i+=2){
-    aff_serie(m.m[i-3/2],i);
-  }
-  aff_carte(m.pioche.c[0],12,5);
-  return 1;
+int i;
+for(i=3;i<10;i+=2){
+aff_serie(m.m[i-3/2],i);
+}
+aff_carte(m.pioche.c[0],12,5);
+return 1;
 }*/
 
 int aff_stock(stock s,int p){

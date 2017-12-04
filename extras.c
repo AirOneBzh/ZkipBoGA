@@ -17,7 +17,7 @@ void winner(char *nom){
   MLV_play_music(music, 2.0, -1);
   MLV_draw_adapted_text_box(positionX,positionY, text, 10,MLV_COLOR_RED,MLV_COLOR_GREEN,MLV_COLOR_BLUE,MLV_TEXT_CENTER);
   MLV_actualise_window();
-  MLV_wait_seconds(30);
+  MLV_wait_seconds(12);
   MLV_stop_music();
   MLV_free_music(music);
   MLV_free_audio();
@@ -27,7 +27,7 @@ void winner(char *nom){
 
 void son_pose(){
   MLV_Sound* sound;
-  sound = MLV_load_sound("assets/posecartes.mp3");
+  sound = MLV_load_sound("assets/posecartes.ogg");
   MLV_play_sound(sound, 1.0);
   MLV_stop_all_sounds();
   MLV_free_sound(sound);
@@ -47,7 +47,7 @@ void son_mel(){
 
 int main(){
   MLV_create_window("text", "text", 800, 800);
-  winner("J1");
+
   son_pose();
   son_mel();
   return 0;

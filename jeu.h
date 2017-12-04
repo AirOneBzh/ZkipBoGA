@@ -7,15 +7,17 @@ typedef enum {J1,J2,J3,J4} num_joueur;
 typedef struct {
   char nom[30];
   num_joueur n;
-  stock tas;
-  pile defausse[5];   // def[i].nb=
-  carte main[6];     // main[0].val=nb cartes en main
+  int tas[30];   //30
+  int defausse[5][30];   // def[i].nb=
+  int main[6];     // main[0].val=nb cartes en main
 } joueur ;
 
 typedef struct{
-  paquet pioche;
-  serie m[4];
+  int pioche[162];
+  int m[4][13];
 } milieu;
+
+typedef carte ref[162];
 
 typedef struct {
   char nom[30];    //nom du Jeu
@@ -26,3 +28,7 @@ typedef struct {
 int menufen(int nbmenu,options o);
 int fenetre(int l,int h);
 #endif
+
+
+
+////// ///////////////////////////  RÉFÉRENCES /////////////////////////////////////:

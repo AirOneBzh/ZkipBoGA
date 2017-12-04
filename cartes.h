@@ -1,3 +1,4 @@
+
 typedef struct {
   int val;
   char ens[20];         // enseigne (couleur) ou permet de différencier cartes

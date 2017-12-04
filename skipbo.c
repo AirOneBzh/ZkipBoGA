@@ -30,28 +30,28 @@ int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'un
 int mouse_to_zone(); // transforme coords souris en zone d'une pile de jeu
 
 
+
 int main(int argc,char **argv){
   options o;
-  //paquet pioche,pile[4],def[5][4],tas[4];
   int i;
   joueur j;
-
   sprintf(o.nom,"ZkipBoGA");
-  paquet p;
+  milieu mil;
   char lcens[30][5];
   for(i=0;i<12;i++){
     sprintf(lcens[i],"%d",i+1);
   }
   o.nbj=4;
-  p=creer_paquet(162,12,lcens,12,"S",18);
+  mil.pioche=creer_paquet(162,12,lcens,12,"S",18);
   if(menufen(2,o)==0){
     return 0;
   }
   for(i=0;i<162;i++){
-    printf("%d %s\n",p.c[i].val,p.c[i].ens);
+    printf("%d %s\n",mil.pioche.c[i].val,mil.pioche.c[i].ens);
   }
   fenetre(80*22,80*11);
   MLV_clear_window(MLV_rgba(38,133,52,255));
+  printf("%d",EOF);
   aff_joueur(j);
   MLV_actualise_window();
   MLV_wait_seconds(10);
