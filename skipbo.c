@@ -1,12 +1,10 @@
 //// programme lancement du jeu de SkipBo
-#ifndef CARTES_H
-#include "cartes.h"
-#endif
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "jeu.h"
 #include <MLV/MLV_all.h>
+#include "interface.h"
 /// éléments
 // pioche
 // pile milieu (4)
@@ -27,7 +25,7 @@
 // une qui actualise les zones de clic dispo   (dans une liste)
 
 
-int selzone(zone[],*main,x,y); // si case contient une carte et aucune carte en main alors selection de la carte
+int selzone(int z[][50],carte sel,int x,int y); // si case contient une carte et aucune carte en main alors selection de la carte
 int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'une carte
 int mouse_to_zone(); // transforme coords souris en zone d'une pile de jeu
 
@@ -38,22 +36,25 @@ int main(int argc,char **argv){
   int i;
   joueur j;
 
-  sprintf(o.nom[0],"ZkipBoGA");
-  sprintf(o.nom[1],"Quitter");
+  sprintf(o.nom,"ZkipBoGA");
   paquet p;
   char lcens[30][5];
   for(i=0;i<12;i++){
     sprintf(lcens[i],"%d",i+1);
   }
+  o.nbj=4;
   p=creer_paquet(162,12,lcens,12,"S",18);
-  menufen(3,o);
-  for(i=0;i<162;i++){
-    printf("%d %s\n",p.c[i].valeur,p.c[i].ens);
+  if(menufen(2,o)==0){
+    return 0;
   }
-  fenetre(500,500);
+  for(i=0;i<162;i++){
+    printf("%d %s\n",p.c[i].val,p.c[i].ens);
+  }
+  fenetre(80*22,80*11);
   MLV_clear_window(MLV_rgba(38,133,52,255));
   aff_joueur(j);
   MLV_actualise_window();
-  MLV_close_window();
+  MLV_wait_seconds(10);
+  MLV_free_window();
   return 1;
 }
