@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <MLV/MLV_all.h>
 #include "jeu.h"
+#include "interface.h"
 
 // menuc nombre d'entrees, menuv titre menu
 int menufen(int nbmenu,options o){
@@ -37,16 +38,20 @@ int menufen(int nbmenu,options o){
   }
 
   MLV_actualise_window();
-  while(x<40 || y<140 || x>760 || y>620){
-    MLV_wait_mouse(&x,&y);
+  while(1){
+    wait_inter(&x,&y);
     printf("x%d y%d\n",x,y);
-    if(x>40 && y>240 && x<760 && y<320){
-      printf("README\n");
+    if(y<2 || y>5){
+      MLV_free_window();
+      return 0;
     }
-  }
-  if(x>40 && y>140 && x<760 && y<220){
-    MLV_free_window();
-    return 1;
+    if(y==2){
+      MLV_free_window();
+      return 1;
+    }
+    if(y==3){
+      printf("README");
+    }
   }
   MLV_free_window();
   return 0;
@@ -57,6 +62,6 @@ int fenetre (int l,int h){
   MLV_create_window("ZkipBoGA","ZkipBoGA",l,h);
 
   MLV_actualise_window();
-  
+
   return 1;
 } // h hauteur , l largeur

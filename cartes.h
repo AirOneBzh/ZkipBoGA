@@ -4,23 +4,10 @@ typedef struct {
   char ens[20];         // enseigne (couleur) ou permet de différencier cartes
 } carte;
 
-typedef struct{
-  carte c[30];
-  int nb;         // nombre de carte dans tas de cartes
-} stock;      // stock tas de carte à écouler par le joueur (vide = victoire)
-
-typedef struct{
-  carte c[12];
-  int nb;
-} serie;  // la serie au milieu de 1 a 12
-
-typedef struct{
-  carte c[15];
-  int nb;
-}pile;
+typedef carte reference[162];
 
 typedef struct {
-  carte c[400];
+  reference r;
   int nb;           // taille réelle paquet
 } paquet;  //pioche
 

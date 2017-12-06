@@ -15,31 +15,25 @@ paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[]
   for(i=0;i<nbens;i++){
     sprintf(ens,"%s",lcens[i]);
     for(j=0;j<nbcaens;j++){
-      p.c[i*nbcaens+j].val=j+1;    // valeur > int au besoin modifié par le prog
-      strcpy(p.c[i*nbcaens+j].ens,ens);
+      p.r[i*nbcaens+j].val=j+1;    // valeur > int au besoin modifié par le prog
+      strcpy(p.r[i*nbcaens+j].ens,ens);
     }
   }
 
   for(k=nbcaens*nbens;k<nbca;k++){
-    p.c[k].val=0;                 // 0 = joker
-    strcpy(p.c[k].ens,cspe);
+    p.r[k].val=0;                 // 0 = joker
+    strcpy(p.r[k].ens,cspe);
   }
   return p;
 }
 
-int depl_carte(int d[],int a[]){
-  int i;
-  a[n_a]=d[0];
-  for(i=0;i<n_d-1;i++){
-
-  }
-}
 
 
 
-int piocher(paquet pioche,joueur j,int n){
+
+int piocher(paquet p,joueur j,int n){
   // son_dist
-  while(j.main[0].val<n){
+  while(p.r[j.main[0]].val<n){
     // depl_carte pioche.carte[] main[]
   }
   return 1;

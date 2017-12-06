@@ -25,7 +25,6 @@
 // une qui actualise les zones de clic dispo   (dans une liste)
 
 
-int selzone(int z[][50],carte sel,int x,int y); // si case contient une carte et aucune carte en main alors selection de la carte
 int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'une carte
 int mouse_to_zone(); // transforme coords souris en zone d'une pile de jeu
 
@@ -36,23 +35,29 @@ int main(int argc,char **argv){
   int i;
   joueur j;
   sprintf(o.nom,"ZkipBoGA");
-  milieu mil;
+  paquet p;
   char lcens[30][5];
   for(i=0;i<12;i++){
     sprintf(lcens[i],"%d",i+1);
   }
   o.nbj=4;
-  mil.pioche=creer_paquet(162,12,lcens,12,"S",18);
+  p=creer_paquet(162,12,lcens,12,"S",18);
   if(menufen(2,o)==0){
     return 0;
   }
-  for(i=0;i<162;i++){
-    printf("%d %s\n",mil.pioche.c[i].val,mil.pioche.c[i].ens);
-  }
+
   fenetre(80*22,80*11);
-  MLV_clear_window(MLV_rgba(38,133,52,255));
-  printf("%d",EOF);
-  aff_joueur(j);
+  reset_fen();
+  aff_joueur(p,j);
+  int x,y;
+  while(1){
+    wait_inter(&x,&y);
+    if(x==-1 && y==0){
+      printf("ECHAP\n");
+      return 0;
+    }
+    printf("inter %d %d \n",x,y);
+  }
   MLV_actualise_window();
   MLV_wait_seconds(10);
   MLV_free_window();

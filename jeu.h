@@ -13,11 +13,10 @@ typedef struct {
 } joueur ;
 
 typedef struct{
-  int pioche[162];
+  int pioche[163];
   int m[4][13];
 } milieu;
 
-typedef carte ref[162];
 
 typedef struct {
   char nom[30];    //nom du Jeu
