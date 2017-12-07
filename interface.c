@@ -22,29 +22,48 @@ int aff_carte(paquet p,int c,int x,int y){
   MLV_resize_image(img,taille,taille);
   MLV_draw_image(img,x*taille,y*taille);
   int ecart = taille*0.1;
-  printf("ecart %d\n",ecart);
-  MLV_draw_rectangle(x*taille-8,y*taille-8,taille+8,taille+8,MLV_COLOR_RED);
+  printf("x %d y %d \n",x,y);
+  MLV_draw_rectangle(x*taille-ecart,y*taille-ecart,taille+ecart,taille+ecart,MLV_COLOR_RED);
   return 1;
 }
 
 // affiche la carte du dessus d'une zone
 
-int aff_joueur(paquet p,joueur j){
-  aff_carte(p,j.tas[0],16,8);
+void aff_joueur(paquet p,joueur j){
+  aff_carte(p,j.tas[1],16,8);
 
-  aff_carte(p,j.defausse[0][0],5,8);
-  aff_carte(p,j.defausse[0][0],7,8);
-  aff_carte(p,j.defausse[0][0],9,8);
-  aff_carte(p,j.defausse[0][0],11,8);
-  aff_carte(p,j.defausse[0][0],13,8);
+  aff_carte(p,j.defausse[0][1],5,8);
+  aff_carte(p,j.defausse[1][1],7,8);
+  aff_carte(p,j.defausse[2][1],9,8);
+  aff_carte(p,j.defausse[3][1],11,8);
+  aff_carte(p,j.defausse[4][1],13,8);
 
-  aff_carte(p,j.main[0],6,10);
-  aff_carte(p,j.main[0],8,10);
-  aff_carte(p,j.main[0],10,10);
-  aff_carte(p,j.main[0],12,10);
-  aff_carte(p,j.main[0],14,10);
+  aff_carte(p,j.main[1],6,10);
+  aff_carte(p,j.main[2],8,10);
+  aff_carte(p,j.main[3],10,10);
+  aff_carte(p,j.main[4],12,10);
+  aff_carte(p,j.main[5],14,10);
   MLV_actualise_window();
-  return 1;
+}
+
+void aff_adv(paquet p,joueur j,int pos){
+  int i;
+  aff_carte(p,j.tas[1],4,2);
+  for(i=6;i<15;i+=2){
+    aff_carte(p,0,i,0);             //main
+    aff_carte(p,j.defausse[0][1],i+1,2);   //defausse
+  }
+  MLV_actualise_window();
+}
+
+void aff_milieu(paquet p,milieu m){
+  aff_carte(p,0,15,5);
+
+  aff_carte(p,m.m[0][1],6,5);
+  aff_carte(p,m.m[1][1],8,5);
+  aff_carte(p,m.m[2][1],10,5);
+  aff_carte(p,m.m[3][1],12,5);
+  MLV_actualise_window();
 }
 
 void reset_fen(){
@@ -57,6 +76,7 @@ void reset_fen(){
   MLV_free_image(tapis);
   MLV_actualise_window();
 }
+
 // retourne dans x et y les variables correspondant à la case séléctionnée
 int wait_inter(int *x,int *y){
   MLV_Keyboard_button keyb;

@@ -32,10 +32,11 @@ int mouse_to_zone(); // transforme coords souris en zone d'une pile de jeu
 
 int main(int argc,char **argv){
   options o;
-  int i;
-  joueur j;
+  int i,taille;
+  joueur j[4];
   sprintf(o.nom,"ZkipBoGA");
   paquet p;
+  milieu m;
   char lcens[30][5];
   for(i=0;i<12;i++){
     sprintf(lcens[i],"%d",i+1);
@@ -45,10 +46,12 @@ int main(int argc,char **argv){
   if(menufen(2,o)==0){
     return 0;
   }
-
-  fenetre(80*22,80*11);
+  taille=(MLV_get_desktop_width()*0.95)/22;
+  fenetre(taille*22,taille*11);
   reset_fen();
-  aff_joueur(p,j);
+  aff_joueur(p,j[0]);
+  aff_adv(p,j[1],2);
+  aff_milieu(p,m);
   int x,y;
   while(1){
     wait_inter(&x,&y);
