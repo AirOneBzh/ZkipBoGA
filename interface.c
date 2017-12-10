@@ -12,7 +12,7 @@ int aff_carte(paquet p,int c,int x,int y){
   MLV_Image* img;
   int taille = MLV_get_window_height()/11;
   char path_img[10];
-  if(c<-1 || c>12){
+  if(c<-1 || c>162){
     c=-1;
   }
   printf("c%d x%d y%d\n",c,x,y);
@@ -31,25 +31,22 @@ int aff_carte(paquet p,int c,int x,int y){
     MLV_resize_image(img,taille,taille);
     MLV_draw_image(img,x*taille,y*taille);
   }
+  else{
+    MLV_draw_filled_rectangle(x*taille,y*taille,taille,taille,MLV_rgba(34,76,16,255));
+    MLV_draw_rectangle(x*taille,y*taille,taille,taille,MLV_rgba(13,53,16,255));
+  }
   return 1;
 }
 
 // affiche la carte du dessus d'une zone
 
 void aff_joueur(paquet p,joueur j){
-  aff_carte(p,j.tas[1],16,8);
-
-  aff_carte(p,j.defausse[0][1],5,8);
-  aff_carte(p,j.defausse[1][1],7,8);
-  aff_carte(p,j.defausse[2][1],9,8);
-  aff_carte(p,j.defausse[3][1],11,8);
-  aff_carte(p,j.defausse[4][1],13,8);
-
-  aff_carte(p,j.main[1],6,10);
-  aff_carte(p,j.main[2],8,10);
-  aff_carte(p,j.main[3],10,10);
-  aff_carte(p,j.main[4],12,10);
-  aff_carte(p,j.main[5],14,10);
+  int i;
+  aff_carte(p,160,16,8);
+  for(i=6;i<15;i+=2){
+    aff_carte(p,j.main[(i-4)/2],i,10);
+    aff_carte(p,j.defausse[(i-4)/2][1],i-1,8);
+  }
   MLV_actualise_window();
 }
 
@@ -58,7 +55,7 @@ void aff_adv(paquet p,joueur j,int pos){
   aff_carte(p,j.tas[1],4,2);
   for(i=6;i<15;i+=2){
     aff_carte(p,j.main[(i-4)/2],i,0);             //main
-    aff_carte(p,j.defausse[0][1],i+1,2);   //defausse
+    aff_carte(p,j.defausse[(i-4)/2][1],i+1,2);   //defausse
   }
   MLV_actualise_window();
 }
@@ -91,7 +88,6 @@ int wait_inter(int *x,int *y){
   int r,u,taille;
   taille=MLV_get_window_height()/11;
   r=MLV_wait_keyboard_or_mouse(&keyb,&keym,&u,x,y);
-  printf("KEY%d, Mouse%d r%d\n",MLV_KEY,MLV_MOUSE_BUTTON,r);
   if(r==MLV_KEY){
     *x=0;
     *y=0;

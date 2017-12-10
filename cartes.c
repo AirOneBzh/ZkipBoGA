@@ -36,7 +36,8 @@ void init_cartes(int c[]){
 //deplace des cartes contenus dans un paquet
 void aj_carte(int p[],int c){
   int i;
-  for(i=1;i<=p[0];i++){
+
+  for(i=p[0];i>=1;i--){
     p[i+1]=p[i];
   }
   p[0]++;
@@ -51,6 +52,33 @@ int ret_carte(int p[]){
   }
   p[0]--;
   return c;
+}
+
+int ret_carte_n(int p[],int n){
+  int i,c;
+  c=p[n];
+  for(i=n;i<=p[0];i++){
+    p[i]=p[i+1];
+  }
+  p[0]--;
+  return c;
+}
+int ret_carte_m(int p[],int n){
+  int c;
+  c=p[n];
+  p[n]=-1;
+  p[0]--;
+  return c;
+}
+
+void mel_pioche(int p[]){
+  int i,r,n,c;
+  n=rand()%500+500;
+  for(i=0;i<n;i++){
+    r=rand()%161+1;
+    c=ret_carte_n(p,r);
+    aj_carte(p,c);
+  }
 }
 
 int piocher(int pioche[],int main[],int n){
