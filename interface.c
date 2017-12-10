@@ -1,3 +1,4 @@
+
 // Module gérant l'interface graphique
 // et les intéractions souris avec celle-ci
 #include <stdlib.h>
@@ -8,22 +9,28 @@
 #include <MLV/MLV_all.h>
 
 int aff_carte(paquet p,int c,int x,int y){
-  c=0;
   MLV_Image* img;
   int taille = MLV_get_window_height()/11;
   char path_img[10];
-  if(p.r[c].val==0){
-    sprintf(path_img,"assets/0.png");
+  if(c<-1 || c>12){
+    c=-1;
   }
-  else{
-    sprintf(path_img,"assets/0.png");
+  printf("c%d x%d y%d\n",c,x,y);
+  if(c!=-1){
+    printf("               val %d \n",p.r[c].val);
+    if(c==0){
+      sprintf(path_img,"assets/verso.png");
+    }
+    else{
+      sprintf(path_img,"assets/%d.png",p.r[c].val);
+    }
+    img=MLV_load_image(path_img);
+    if(img==NULL){
+      printf("NULLLLL img\n");
+    }
+    MLV_resize_image(img,taille,taille);
+    MLV_draw_image(img,x*taille,y*taille);
   }
-  img=MLV_load_image(path_img);
-  MLV_resize_image(img,taille,taille);
-  MLV_draw_image(img,x*taille,y*taille);
-  int ecart = taille*0.1;
-  printf("x %d y %d \n",x,y);
-  MLV_draw_rectangle(x*taille-ecart,y*taille-ecart,taille+ecart,taille+ecart,MLV_COLOR_RED);
   return 1;
 }
 
@@ -50,7 +57,7 @@ void aff_adv(paquet p,joueur j,int pos){
   int i;
   aff_carte(p,j.tas[1],4,2);
   for(i=6;i<15;i+=2){
-    aff_carte(p,0,i,0);             //main
+    aff_carte(p,j.main[(i-4)/2],i,0);             //main
     aff_carte(p,j.defausse[0][1],i+1,2);   //defausse
   }
   MLV_actualise_window();
@@ -88,7 +95,6 @@ int wait_inter(int *x,int *y){
   if(r==MLV_KEY){
     *x=0;
     *y=0;
-    printf("x%d y%d\n",*x,*y);
     if(keyb==MLV_KEYBOARD_ESCAPE){
       *x=(-1);
     }
@@ -97,7 +103,6 @@ int wait_inter(int *x,int *y){
   else if(r==MLV_MOUSE_BUTTON){
     (*x)=*x/taille;
     (*y)=*y/taille;
-    printf("x%d y%d\n",*x,*y);
     return 1;
   }
 

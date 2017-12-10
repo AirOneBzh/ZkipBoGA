@@ -12,29 +12,28 @@
 int menufen(int nbmenu,options o){
   int c,x,y;
   char menu[8][30];
-  MLV_create_window("Menu","Menu",800,900);
+  int taille;
+  taille=(MLV_get_desktop_height()*0.65)/10;
+  MLV_create_window("Menu","Menu",((1.4*nbmenu)+2)*taille,10*taille);
   MLV_Image* header = MLV_load_image("assets/header.png");
   MLV_resize_image(header,100,100);
   MLV_Color fond = MLV_rgba(40,40,40,255);
-  MLV_Font* font=MLV_load_font("assets/pricedown.ttf",60);
-  MLV_Font* devil60=MLV_load_font("assets/Devil Breeze Bold.ttf",60);
-  MLV_Font* devil80=MLV_load_font("assets/Devil Breeze Bold.ttf",90);
+  MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.65*taille);
   sprintf(menu[0],"Lancer %s",o.nom);
   sprintf(menu[1],"Règles");
   sprintf(menu[2],"Options");
   sprintf(menu[3],"Bots");
   sprintf(menu[4],"Quitter");
   nbmenu=5;
+  MLV_change_window_size((1.4*nbmenu+2)*taille,10*taille);
+  MLV_actualise_window();
   o.nbj=2;
   MLV_clear_window(fond);
-  MLV_draw_image(header,30,15);
-  MLV_draw_text_with_font(150,15,o.nom,font,MLV_COLOR_WHITE);
-  MLV_draw_text_with_font(500,15,"ZNG",devil60,MLV_COLOR_RED);          // T. ZANGA :)
-  MLV_draw_text_with_font(640,10,"c",devil80,MLV_COLOR_DARKGREEN);      // Cesarus
-  MLV_draw_text_with_font(683,10,"a",devil80,MLV_COLOR_BLUE);           // AirOne
+  MLV_draw_image(header,0.2*taille,0.1*taille);
+  MLV_draw_text_with_font(1.6*taille,0.2*taille,o.nom,font,MLV_COLOR_WHITE);
   for(c=0;c<nbmenu;c++){
-    MLV_draw_filled_rectangle(40,140+100*c,720,80,MLV_COLOR_WHITE);
-    MLV_draw_text_with_font(80,140+100*c,menu[c],font,fond);
+    MLV_draw_filled_rectangle(0.6*taille,(2+1.5*c)*taille,7.8*taille,taille,MLV_COLOR_WHITE);
+    MLV_draw_text_with_font(taille*1.1,(2+1.5*c)*taille,menu[c],font,fond);
   }
 
   MLV_actualise_window();

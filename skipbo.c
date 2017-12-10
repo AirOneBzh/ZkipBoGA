@@ -28,7 +28,22 @@
 int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'une carte
 int mouse_to_zone(); // transforme coords souris en zone d'une pile de jeu
 
-
+void init_tas(joueur j[],milieu m){
+  int i;
+  for(i=0;i<5;i++){
+    init_cartes(j[0].defausse[i]);
+    j[0].main[i+1]=-1;
+  }
+  init_cartes(j[0].tas);
+  for(i=0;i<5;i++){
+    init_cartes(j[1].defausse[i]);
+    j[1].main[i+1]=-1;
+  }
+  for(i=0;i<4;i++){
+    init_cartes(m.m[i]);
+  }
+  init_cartes(j[1].tas);
+}
 
 int main(int argc,char **argv){
   options o;
@@ -48,7 +63,9 @@ int main(int argc,char **argv){
   }
   taille=(MLV_get_desktop_width()*0.95)/22;
   fenetre(taille*22,taille*11);
+  initialise(j,m);
   reset_fen();
+  piocher(m.pioche,j[0].main,5);
   aff_joueur(p,j[0]);
   aff_adv(p,j[1],2);
   aff_milieu(p,m);

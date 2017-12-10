@@ -13,3 +13,5 @@ typedef struct {
 
 
 paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[],int nbspe);
+void init_cartes(int c[]);
+int piocher(int pioche[],int main[],int n);
