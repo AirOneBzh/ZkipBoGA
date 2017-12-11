@@ -73,7 +73,7 @@ int ret_carte_m(int p[],int n){
 
 void mel_pioche(int p[]){
   int i,r,n,c;
-  n=rand()%500+500;
+  n=rand()%(3*p[0])+(3*p[0]);
   for(i=0;i<n;i++){
     r=rand()%161+1;
     c=ret_carte_n(p,r);

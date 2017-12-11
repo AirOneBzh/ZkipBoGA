@@ -27,20 +27,14 @@
 
 
 int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'une carte
-void case_carte(int x,int y,int *a,int *b){
+void case_carte(int pos[][3 ],int x,int y,int *a,int *b){
   int i;
-  for(i=6;i<15;i+=2){
-    if(y==10 && x==i){
-      *a=0;
-      *b=(i-4)/2;
-    }
-    if(y==8 && x==i-1){ //defausse
-      *a=1;
-      *b=(i-5)/2;
-    }
-    if(y==5 && x==i){
-      *a=3;
-      *b=(i-4)/2;
+  for(i=0;i<15;i++){
+    printf("x%d y%d posx %d posy %d\n",x,y,pos[i][1],pos[i][2]);
+    if(pos[i][1]==x && pos[i][2]==y){
+      *a=pos[i][0];
+      *b=(pos[i][1]-4)/2;
+      break;
     }
   }
   printf("a%d b%d\n",*a,*b);
@@ -70,14 +64,38 @@ void init_tas(joueur j[],milieu *m){
   m->pioche[0]=162;
 }
 
+void init_zone(int pos[][3]){
+  int i;
+  for(i=6;i<15;i+=2){
+    pos[(i-6)/2][0]=0;
+    pos[(i-6)/2][1]=i;
+    pos[(i-6)/2][2]=10;
+    pos[(i-6)/2+5][0]=1;
+    pos[(i-6)/2+5][1]=i-1;
+    pos[(i-6)/2+5][2]=8;
+  }
+  pos[11][0]=2;
+  pos[11][1]=16;
+  pos[11][2]=8;
+  for(i=6;i<13;i+=2){
+    pos[12+(i-6)/2][0]=3;
+    pos[12+(i-6)/2][1]=i;
+    pos[12+(i-6)/2][2]=5;
+  }
+}
+
 int main(int argc,char **argv){
   srand(time(NULL));
   options o;
-  int i,taille,a,b;
+  int i,taille,a,b,jeupasfin=1;
   joueur j[4];
+  j[1].ia=1;
+  int tour_j;
+  tour_j=0;
   sprintf(o.nom,"ZkipBoGA");
   paquet p;
   milieu m;
+  int pos[48][3];
   char lcens[30][5];
   for(i=0;i<12;i++){
     sprintf(lcens[i],"%d",i+1);
@@ -90,42 +108,50 @@ int main(int argc,char **argv){
   taille=(MLV_get_desktop_width()*0.95)/22;
   fenetre(taille*22,taille*11);
   init_tas(j,&m);
+  init_zone(pos);
   reset_fen();
   mel_pioche(m.pioche);
   printf("pioooo%d \n",m.pioche[1]);
-  piocher(m.pioche,j[0].main,5);
-  piocher(m.pioche,j[1].main,5);
-  aff_joueur(p,j[0]);
-  aff_adv(p,j[1],2);
-  aff_milieu(p,m);
-  int x,y,pasfin=1,c=-1,selx,sely;
-  while(pasfin!=0){
-    wait_inter(&x,&y);
-    if(x==-1 && y==0){
-      printf("ECHAP %d\n",pasfin);
-      pasfin=0;
-      break;
+  while(jeupasfin){
+    if(tour_j>o.nbj){
+      tour_j-=o.nbj;
     }
-    case_carte(x,y,&a,&b);
-    if(selx!=-1){
-      selx=a;
-      sely=b;
-      MLV_draw_rectangle(x*taille-1,y*taille-1,taille+2,taille+2,MLV_COLOR_WHITE);
+    if(j[tour_j].ia==0){
+      aff_joueur(p,j[tour_j]);
+      aff_adv(p,j[o.nbj-tour_j],2);
     }
-    else{
-      if(selx==0){
-        c=ret_carte_m(j[0].main,sely);
-      }
-      if(a==3){
-        aj_carte(m.m[sely],c);
-      }
-    }
-    aff_joueur(p,j[0]);
+    piocher(m.pioche,j[tour_j].main,5);
     aff_milieu(p,m);
+    int x,y,pasfin=1,c=-1,selx=-1,sely;
+    while(pasfin!=0){
+      wait_inter(&x,&y);
+      if(x==-1 && y==0){
+        printf("ECHAP %d\n",pasfin);
+        pasfin=0;
+        break;
+      }
+      case_carte(pos,x,y,&a,&b);
+      if(selx==-1){
+        selx=a;
+        sely=b;
+        MLV_draw_rectangle(x*taille-1,y*taille-1,taille+2,taille+2,MLV_COLOR_WHITE);
+      }
+      else{
+        if(selx==0){
+          c=ret_carte_m(j[0].main,sely);
+        }
+        if(a==3){
+          aj_carte(m.m[b-1],c);
+        }
+        MLV_draw_rectangle(selx*taille-1,sely*taille-1,taille+2,taille+2,MLV_rgba(34,76,16,255));
+        selx=-1;
+      }
+      aff_joueur(p,j[0]);
+      aff_milieu(p,m);
+    }
+    tour_j++;
+    printf("inter %d %d \n",x,y);
   }
-
-  printf("inter %d %d \n",x,y);
-
   MLV_actualise_window();
   MLV_free_window();
   return 1;

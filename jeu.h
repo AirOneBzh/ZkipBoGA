@@ -1,12 +1,11 @@
 // définition de la structure du jeu de SkipBo
 
-typedef enum {J1,J2,J3,J4} num_joueur;
 #ifndef CARTES_H
 #include "cartes.h"
 
 typedef struct {
   char nom[30];
-  num_joueur n;
+  int ia;
   int tas[30];   //30
   int defausse[5][30];   // def[i].nb=
   int main[6];     // main[0].val=nb cartes en main
