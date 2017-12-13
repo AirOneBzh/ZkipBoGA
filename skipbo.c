@@ -85,73 +85,27 @@ void init_zone(int pos[][3]){
 }
 
 int main(int argc,char **argv){
+  int i,taille;
+  paquet p;
   srand(time(NULL));
   options o;
-  int i,taille,a,b,jeupasfin=1;
-  joueur j[4];
-  j[1].ia=1;
-  int tour_j;
-  tour_j=0;
-  sprintf(o.nom,"ZkipBoGA");
-  paquet p;
-  milieu m;
-  int pos[48][3];
+
+
+
   char lcens[30][5];
   for(i=0;i<12;i++){
     sprintf(lcens[i],"%d",i+1);
   }
-  o.nbj=4;
+
+  o.nbj=2;  // normalement 4 mais on limite pour le début
   p=creer_paquet(162,12,lcens,12,"S",18);
-  if(menufen(2,o)==0){
+  if(menufen("ZkipBoGA",o)==0){
     return 0;
   }
+
   taille=(MLV_get_desktop_width()*0.95)/22;
   fenetre(taille*22,taille*11);
-  init_tas(j,&m);
-  init_zone(pos);
-  reset_fen();
-  mel_pioche(m.pioche);
-  printf("pioooo%d \n",m.pioche[1]);
-  while(jeupasfin){
-    if(tour_j>o.nbj){
-      tour_j-=o.nbj;
-    }
-    if(j[tour_j].ia==0){
-      aff_joueur(p,j[tour_j]);
-      aff_adv(p,j[o.nbj-tour_j],2);
-    }
-    piocher(m.pioche,j[tour_j].main,5);
-    aff_milieu(p,m);
-    int x,y,pasfin=1,c=-1,selx=-1,sely;
-    while(pasfin!=0){
-      wait_inter(&x,&y);
-      if(x==-1 && y==0){
-        printf("ECHAP %d\n",pasfin);
-        pasfin=0;
-        break;
-      }
-      case_carte(pos,x,y,&a,&b);
-      if(selx==-1){
-        selx=a;
-        sely=b;
-        MLV_draw_rectangle(x*taille-1,y*taille-1,taille+2,taille+2,MLV_COLOR_WHITE);
-      }
-      else{
-        if(selx==0){
-          c=ret_carte_m(j[0].main,sely);
-        }
-        if(a==3){
-          aj_carte(m.m[b-1],c);
-        }
-        MLV_draw_rectangle(selx*taille-1,sely*taille-1,taille+2,taille+2,MLV_rgba(34,76,16,255));
-        selx=-1;
-      }
-      aff_joueur(p,j[0]);
-      aff_milieu(p,m);
-    }
-    tour_j++;
-    printf("inter %d %d \n",x,y);
-  }
+
   MLV_actualise_window();
   MLV_free_window();
   return 1;

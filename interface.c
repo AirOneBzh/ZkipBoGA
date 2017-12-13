@@ -8,6 +8,7 @@
 #include "interface.h"
 #include <MLV/MLV_all.h>
 
+
 int aff_carte(paquet p,int c,int x,int y){
   MLV_Image* img;
   int taille = MLV_get_window_height()/11;
@@ -82,25 +83,68 @@ void reset_fen(){
 }
 
 // retourne dans x et y les variables correspondant à la case séléctionnée
-int wait_inter(int *x,int *y){
+coord wait_inter(int taille){
   MLV_Keyboard_button keyb;
   MLV_Keyboard_modifier keym;
-  int r,u,taille;
-  taille=MLV_get_window_height()/11;
-  r=MLV_wait_keyboard_or_mouse(&keyb,&keym,&u,x,y);
+  int r,u;
+  coord c;
+  r=MLV_wait_keyboard_or_mouse(&keyb,&keym,&u,&c.x,&c.y);
   if(r==MLV_KEY){
-    *x=0;
-    *y=0;
+    c.x=-1;
+    c.y=-1;
     if(keyb==MLV_KEYBOARD_ESCAPE){
-      *x=(-1);
+      c.y=0;
     }
-    return 2;
+    if(keyb==MLV_KEYBOARD_s){
+      c.y=1;
+    }
+    if(keyb==MLV_KEYBOARD_q){
+      c.y=2;
+    }
+    if(keyb==MLV_KEYBOARD_f){
+      c.y=3;
+    }
+    return c;
   }
   else if(r==MLV_MOUSE_BUTTON){
-    (*x)=*x/taille;
-    (*y)=*y/taille;
-    return 1;
+    c.x=c.x/taille;
+    c.y=c.y/taille;
+    return c;
   }
 
-  return 0;
+  return c;
+}
+
+coord conv_to_menu(coord c){
+  coord r;
+  int tailleh = MLV_get_desktop_height()*0.65;
+  int carre = tailleh /10;
+  if(c.x>46 && c.x<8.5*carre){
+    if(c.y>232 && c.y<232+carre){
+      //if(c.x>)
+      r.x=1;
+      r.y=0;
+      return r;
+    }
+      r.x=1;
+      r.y=0;
+      return r;
+    }
+    if(c.y>232 && c.y<232+carre){
+      r.x=1;
+      r.y=0;
+      return r;
+    }
+    if(c.y>232 && c.y<232+carre){
+      r.x=1;
+      r.y=0;
+      return r;
+    }
+    if(c.y>232 && c.y<232+carre){
+      r.x=1;
+      r.y=0;
+      return r;
+    }
+  }
+  return r;
 }
