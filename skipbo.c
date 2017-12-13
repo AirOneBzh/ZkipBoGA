@@ -27,18 +27,7 @@
 
 
 int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'une carte
-void case_carte(int pos[][3 ],int x,int y,int *a,int *b){
-  int i;
-  for(i=0;i<15;i++){
-    printf("x%d y%d posx %d posy %d\n",x,y,pos[i][1],pos[i][2]);
-    if(pos[i][1]==x && pos[i][2]==y){
-      *a=pos[i][0];
-      *b=(pos[i][1]-4)/2;
-      break;
-    }
-  }
-  printf("a%d b%d\n",*a,*b);
-}
+
 
 
 void init_tas(joueur j[],milieu *m){
@@ -85,11 +74,14 @@ void init_zone(int pos[][3]){
 }
 
 int main(int argc,char **argv){
-  int i,taille;
-  paquet p;
+  int i,carre,tour,jNfini=1,r;
+  int zones[48][3],distrib[]={0,0,30,25,20};
   srand(time(NULL));
   options o;
-
+  coord c;
+  paquet p;
+  joueur j[4];
+  milieu mil;
 
 
   char lcens[30][5];
@@ -103,8 +95,50 @@ int main(int argc,char **argv){
     return 0;
   }
 
-  taille=(MLV_get_desktop_width()*0.95)/22;
-  fenetre(taille*22,taille*11);
+  carre=(MLV_get_desktop_width()*0.95)/22;
+  fenetre(carre*22,carre*11);
+  reset_fen();
+  init_tas(j,&mil);
+  init_zone(zones);
+
+  mel_pioche(mil.pioche);
+  for(i=0;i<o.nbj;i++){
+    piocher(mil.pioche,j[i].tas,distrib[o.nbj]);
+  }
+  // au début du jeu on rempli le tas d'objectif (celui devant être vidé)
+
+  tour=0;
+
+  while(jNfini){
+
+    if(tour==o.nbj){
+      tour=0;
+    }
+
+    piocher(mil.pioche,j[tour].main,5);
+
+    aff_joueur(p,j[0]);
+    aff_adv(p,j[1],2);
+    aff_milieu(p,mil);
+
+    while(1){
+      c=wait_inter(carre);
+      if(c.x==-1 && c.y==2){
+        MLV_free_window();
+        return 1;
+      }
+      if(c.x!=0 && c.y!=0){
+        for(i=0;i<48;i++){
+          if(c.x==zones[i][1] && c.y==zones[i][2]){
+            r=zones[i][0];
+          }
+        }
+      }
+      if(r==0){
+
+      }
+    }
+  }
 
   MLV_actualise_window();
   MLV_free_window();

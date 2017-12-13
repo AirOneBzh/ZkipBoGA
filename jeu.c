@@ -14,7 +14,6 @@ void bouton(char *nom,int x){
   MLV_Color fond = MLV_rgba(40,40,40,255);            // variables à changer pour les couleurs du menu
   MLV_Color text = MLV_COLOR_WHITE;
   MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.65*carre);
-  printf("bout x%lf y%lf\n",0.5*carre,(1+1.5*x)*carre);
   MLV_draw_filled_rectangle(0.5*carre,(1+1.5*x)*carre,8.5*carre,carre,text);
   MLV_draw_text_with_font(carre,(1+1.5*x)*carre,nom,font,fond);
 }
@@ -24,7 +23,6 @@ void sous_bouton(char *nom,int x,int y,int n,int sel){   // x pour quel bouton v
   int bx,by; //coords des coins NO des boutons
   bx = 5*carre+(4*(y-1)*carre)/n;
   by=(1.1+1.5*x)*carre;
-  printf("sousbout x%d a %lf y%d a %lf\n",bx,(4*0.8*carre)/n,by,0.8*carre);
   MLV_Color fond = MLV_rgba(40,40,40,255);          // variables à changer pour les couleurs du menu
   MLV_Color text = MLV_COLOR_WHITE;
   MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.3*carre);    //max 9 caractère
@@ -73,38 +71,37 @@ int menufen(char *nom,options o){
   bouton("Quitter",5);
   sous_bouton("Autres jeux",5,1,1,0);
 
-  MLV_Color col;
-  for(i=0;i<15;i++){
-    if(i%2){
-      col=MLV_COLOR_BLACK;
-    }
-    else{
-      col=MLV_COLOR_RED;
-    }
-    MLV_draw_filled_rectangle(i*carre,i*carre,carre,carre,col);
-  }
 
+  coord r;
   MLV_actualise_window();
   while(1){
     c=wait_inter(1);
     printf("x%d y%d\n",c.x,c.y);
-    if(c.x==-1){
-      if(c.x==-1 && c.y==2){
-        MLV_free_window();
-        return 0;
-      }
-      if(c.y==10){
-        MLV_free_window();
-        return 0;
-      }
-      if(c.y==2){
+    if(c.x>-1){
+      r=conv_to_menu(c);
+      printf("x%d y%d\n",r.x,r.y);
+      if(r.x==1 && r.y==0){
         MLV_free_window();
         return 1;
       }
-      if(c.y==3){
+      if(r.x==2 && r.y==0){
         printf("README");
       }
+      if(r.x==5 && r.y==0){
+        MLV_free_window();
+        return 0;
+      }
     }
+    else{
+      if(c.y==2){
+        MLV_free_window();
+        return 0;
+      }
+    }
+
+
+
+
   }
 
   MLV_free_window();

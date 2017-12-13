@@ -43,7 +43,7 @@ int aff_carte(paquet p,int c,int x,int y){
 
 void aff_joueur(paquet p,joueur j){
   int i;
-  aff_carte(p,160,16,8);
+  aff_carte(p,j.tas[1],16,8);
   for(i=6;i<15;i+=2){
     aff_carte(p,j.main[(i-4)/2],i,10);
     aff_carte(p,j.defausse[(i-4)/2][1],i-1,8);
@@ -52,22 +52,27 @@ void aff_joueur(paquet p,joueur j){
 }
 
 void aff_adv(paquet p,joueur j,int pos){
-  int i;
+  int i,x;
   aff_carte(p,j.tas[1],4,2);
   for(i=6;i<15;i+=2){
-    aff_carte(p,j.main[(i-4)/2],i,0);             //main
+    if(j.main[(i-4)/2]==-1){
+      x=-1;
+    }
+    else{
+      x=0;
+    }
+    aff_carte(p,x,i,0);             //main
     aff_carte(p,j.defausse[(i-4)/2][1],i+1,2);   //defausse
   }
   MLV_actualise_window();
 }
 
 void aff_milieu(paquet p,milieu m){
+  int i;
   aff_carte(p,0,15,5);
-
-  aff_carte(p,m.m[0][1],6,5);
-  aff_carte(p,m.m[1][1],8,5);
-  aff_carte(p,m.m[2][1],10,5);
-  aff_carte(p,m.m[3][1],12,5);
+  for(i=0;i<3;i++){
+    aff_carte(p,m.m[i][1],i*2+6,5);
+  }
   MLV_actualise_window();
 }
 
@@ -119,31 +124,56 @@ coord conv_to_menu(coord c){
   coord r;
   int tailleh = MLV_get_desktop_height()*0.65;
   int carre = tailleh /10;
-  if(c.x>46 && c.x<8.5*carre){
-    if(c.y>232 && c.y<232+carre){
-      //if(c.x>)
-      r.x=1;
-      r.y=0;
-      return r;
-    }
-      r.x=1;
-      r.y=0;
-      return r;
-    }
+  if(c.x>46 && c.x<46+8.5*carre){
     if(c.y>232 && c.y<232+carre){
       r.x=1;
       r.y=0;
-      return r;
+      if(c.x>465 && c.x<613){
+        r.y=1;
+      }
+      if(c.x>651 && c.x<800){
+        r.y=2;
+      }
     }
-    if(c.y>232 && c.y<232+carre){
-      r.x=1;
+    if(c.y>372 && c.y<372+carre){
+      r.x=2;
       r.y=0;
-      return r;
+      if(c.x>465 && c.x<613){
+        r.y=1;
+      }
+      if(c.x>651 && c.x<800){
+        r.y=2;
+      }
     }
-    if(c.y>232 && c.y<232+carre){
-      r.x=1;
+    if(c.y>511 && c.y<511+carre){
+      r.x=3;
       r.y=0;
-      return r;
+      if(c.x>465 && c.x<613){
+        r.y=1;
+      }
+      if(c.x>651 && c.x<800){
+        r.y=2;
+      }
+    }
+    if(c.y>651 && c.y<651+carre){
+      r.x=4;
+      r.y=0;
+      if(c.x>465 && c.x<564){
+        r.y=1;
+      }
+      if(c.x>582 && c.x<688){
+        r.y=2;
+      }
+      if(c.x>713 && c.x<812){
+        r.y=3;
+      }
+    }
+    if(c.y>790 && c.y<790+carre){
+      r.x=5;
+      r.y=0;
+      if(c.x>465 && c.x<762){
+        r.y=1;
+      }
     }
   }
   return r;
