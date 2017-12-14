@@ -171,10 +171,13 @@ int main(int argc,char **argv){
         if(m.x==0){
           m.x=-1;
         }
+
+
+        //départ
         if(r.x!=-1){
-          if(m.x==tour*3+1){
+          if(m.x==tour*3+1 && r.x !=tour*3+1){
             carte=ret_carte_m(j[tour].main,m.y+1);
-            printf("retmain\n");
+            printf("retmain%d\n",p.r[carte].val);
             if(tour==0){
               aff_joueur(p,j[0]);
             }
@@ -184,7 +187,7 @@ int main(int argc,char **argv){
           }
           if(m.x==tour*3+2 && r.x!=tour*3+2){
             carte=ret_carte(j[tour].defausse[m.y]);
-            printf("retdefausse\n");
+            printf("retdefausse%d\n",p.r[carte].val);
             if(tour==0){
               aff_joueur(p,j[0]);
             }
@@ -193,9 +196,9 @@ int main(int argc,char **argv){
             }
           }
 
-          if(m.x==(tour+1)*3){
+          if(m.x==(tour+1)*3 && r.x==0){
             carte=ret_carte(j[0].tas);
-            printf("rettas\n");
+            printf("rettas%d\n",p.r[carte].val);
             if(tour==0){
               aff_joueur(p,j[0]);
             }
@@ -203,28 +206,46 @@ int main(int argc,char **argv){
               aff_adv(p,j[tour],tour+1);
             }
           }
-          if(r.x==0){
-            aj_carte(mil.m[r.y],carte);
-            printf("ajmil\n");
-            aff_milieu(p,mil);
+
+          //  Arrivé
+          //
+          printf("carte%d\n",carte)
+          if(carte!=-1){
+            if(r.x==0){
+              aj_carte(mil.m[r.y],carte);
+              printf("ajmil\n");
+              aff_milieu(p,mil);
+              m.x=-1;
+              carte=-1;
+            }
+
+            if(r.x==1 && m.x==1){
+              echanger_cartes(j[0].main,r.y,m.y);
+              r.x=-1;
+              m.x=-1;
+              printf("changer cartes main");
+              aff_joueur(p,j[0]);
+            }
+
+            if(r.x==2 && m.x!=3){
+              aj_carte(j[0].defausse[r.y],carte);
+              aff_joueur(p,j[0]);
+              m.x=-1;
+              carte=-1;
+              //tour++;
+              tourpasfin=0;
+            }
+
+            if(r.x==5){
+              aj_carte(j[1].defausse[r.y],carte);
+              aff_joueur(p,j[1]);
+              m.x=-1;
+              carte=-1;
+              //tour++;
+              tourpasfin=0;
+            }
+            r.x=-1;
             m.x=-1;
-            carte=-1;
-          }
-          if(r.x==2){
-            aj_carte(j[0].defausse[r.y],carte);
-            aff_joueur(p,j[0]);
-            m.x=-1;
-            carte=-1;
-            //tour++;
-            tourpasfin=0;
-          }
-          if(r.x==5){
-            aj_carte(j[1].defausse[r.y],carte);
-            aff_joueur(p,j[1]);
-            m.x=-1;
-            carte=-1;
-            //tour++;
-            tourpasfin=0;
           }
         }
       }

@@ -22,7 +22,6 @@ void winner(char *nom){
   MLV_free_music(music);
   MLV_free_audio();
 }
-
 //fonction bruit de carte qui se pose
 
 void son_pose(){

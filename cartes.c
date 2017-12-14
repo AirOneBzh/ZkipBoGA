@@ -33,21 +33,40 @@ void init_cartes(int c[]){
   c[1]=(-1);
 }
 
+// fonction decaler cartes
+// void dec_carte(int p[],int n);
+// fonction mettre trous à la fin
 //deplace des cartes contenus dans un paquet
 void aj_carte(int p[],int c){
   int i;
-
   for(i=p[0];i>=1;i--){
+
     p[i+1]=p[i];
   }
   p[0]++;
   p[1]=c;
 }
 
+void echanger_cartes(int p[],int r,int m){
+  int t;
+  t=p[r+1];
+  p[r+1]=p[m+1];
+  p[m+1]=t;
+}
+
+void aj_carte_m(int p[],int c,int n){
+  int i;
+  if(p[n]!=-1){
+    for(i=p[0];i>=1;i--){
+      p[i+1]=p[i];
+    }
+  }
+  p[0]++;
+  p[n]=c;
+}
 // prends une carte position m et la remplace par le vide
 int ret_carte_m(int p[],int n){
-  int c;
-  c=p[n];
+  int c=p[n];
   p[n]=-1;
   p[0]--;
   return c;
