@@ -29,7 +29,7 @@ paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[]
 
 
 void init_cartes(int c[]){
-  c[0]=1;
+  c[0]=0;
   c[1]=(-1);
 }
 

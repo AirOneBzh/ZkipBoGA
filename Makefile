@@ -5,8 +5,11 @@ LDFLAGS = `pkg-config --libs-only-other --libs-only-L MLV`
 LDLIBS = `pkg-config --libs-only-l MLV`
 
 
-prog: clean skipbo extras
+
+prog: cleanprog skipbo extras
 	-rm -rf *.o
+
+all: prog progpropre pdf
 
 skipbo: skipbo.o jeu.o cartes.o interface.o
 	$(CC) skipbo.o jeu.o cartes.o interface.o $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o skipbo
@@ -25,5 +28,20 @@ interface.o: interface.c interface.h
 
 extras:
 	$(CC) extras.c $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o extras
+
+pdf: latex cleanlatex
+
+latex: rapport.tex
+	pdflatex rapport.tex
+
 clean:
-	-rm -rf *.o skipbo *.aux *.fdb_latexmk *.fls *.log *.synctex.gz
+	rm -rf *.o skipbo *.aux *.fdb_latexmk *.fls *.log *.synctex.gz *~
+
+cleanprog:
+	rm -rf *.o skipbo *~
+
+progpropre:
+	-rm -rf *.o *~
+
+cleanlatex:
+	rm -rf *.aux *.fdb_latexmk *.fls *.log *.synctex.gz *~

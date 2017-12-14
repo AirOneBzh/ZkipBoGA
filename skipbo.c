@@ -25,7 +25,23 @@
 // faire une fonction de détection clic souris (renvoi int de zone de clic)
 // une qui actualise les zones de clic dispo   (dans une liste)
 
+//fonction vérif de règles
+int pos_poss(paquet p,int arr[],int c){
+  printf("posposssss %d %d \n",p.r[c].val,p.r[arr[1]].val);
+  if(p.r[arr[1]].val==p.r[c].val-1){
+    return 1;
+  }
+  if(p.r[c].val==1 && p.r[arr[1]].val==-1){
+    return 1;
+  }
+  if(p.r[c].val==0){
+    return 1;
+  }
+  else{
+    return 0;
+  }
 
+}
 
 
 
@@ -43,7 +59,8 @@ void init_tas(joueur j[],milieu *m){
     j[1].main[i+1]=-1;
   }
   for(i=0;i<4;i++){
-    init_cartes(m->m[i]);
+    m->m[i][1]=-1;
+    m->m[i][0]=0;
   }
   init_cartes(j[1].tas);
   for(i=1;i<163;i++){
@@ -142,11 +159,28 @@ int main(int argc,char **argv){
         }
         bot(j[tour].ia,j[tour],mil,tasadv,o.nbj,&c,&r);
       }
+      if(j[tour].main[0]==0){
+        piocher(mil.pioche,j[tour].main,5);
+      }
       c=wait_inter(carre);
       printf("x %d y %d\n",c.x,c.y);
-      if(c.x==-1 && c.y==2){
-        MLV_free_window();
-        return 1;
+      if(c.x==-1){
+        if(c.y==2){
+          MLV_free_window();
+          return 1;
+        }
+        if(c.y==3){
+          if(MLV_is_full_screen()){
+            MLV_disable_full_screen();
+          }
+          else{
+            MLV_enable_full_screen();
+          }
+          reset_fen();
+          aff_joueur(p,j[0]);
+          aff_adv(p,j[1],2);
+          aff_milieu(p,mil);
+        }
       }
       if(c.x!=0 && c.y!=0 && c.x!=-1){
         r.x=-1;
@@ -209,9 +243,10 @@ int main(int argc,char **argv){
 
           //  Arrivé
           //
-          printf("carte%d\n",carte)
+          printf("carte%d\n",carte);
           if(carte!=-1){
             if(r.x==0){
+              printf("posposs %d\n",pos_poss(p,mil.m[r.y],carte));
               aj_carte(mil.m[r.y],carte);
               printf("ajmil\n");
               aff_milieu(p,mil);
