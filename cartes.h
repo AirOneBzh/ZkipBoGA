@@ -20,3 +20,4 @@ void aj_carte(int p[],int c);
 int ret_carte(int p[]);
 int ret_carte_n(int p[],int n);
 int ret_carte_m(int p[],int n);
+void tri_carte(paquet p,int c[]);

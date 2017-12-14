@@ -44,31 +44,37 @@ void aj_carte(int p[],int c){
   p[1]=c;
 }
 
-int ret_carte(int p[]){
-  int i,c;
-  c=p[1];
-  for(i=1;i<=p[0];i++){
-    p[i]=p[i+1];
-  }
-  p[0]--;
-  return c;
-}
-
-int ret_carte_n(int p[],int n){
-  int i,c;
-  c=p[n];
-  for(i=n;i<=p[0];i++){
-    p[i]=p[i+1];
-  }
-  p[0]--;
-  return c;
-}
+// prends une carte position m et la remplace par le vide
 int ret_carte_m(int p[],int n){
   int c;
   c=p[n];
   p[n]=-1;
   p[0]--;
   return c;
+}
+// prends une carte en position n et décale la suite (pour ne laisser aucun vide)
+int ret_carte_n(int p[],int n){
+  int i,c;
+  c=ret_carte_m(p,n);
+  for(i=n;i<=p[0];i++){
+    p[i]=p[i+1];
+  }
+  return c;
+}
+// pioche une carte sur le dessus de la pile
+int ret_carte(int p[]){
+  return ret_carte_n(p,1);
+}
+
+void tri_carte(paquet p,int c[]){
+  int i,tmp;
+  for(i=1;i<c[0];i++){
+    if(p.r[c[i]].val>p.r[c[i+1]].val){
+      tmp=c[i];
+      c[i]=c[i+1];
+      c[i+1]=tmp;
+    }
+  }
 }
 
 void mel_pioche(int p[]){

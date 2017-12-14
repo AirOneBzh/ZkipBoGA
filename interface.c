@@ -16,9 +16,7 @@ int aff_carte(paquet p,int c,int x,int y){
   if(c<-1 || c>162){
     c=-1;
   }
-  printf("c%d x%d y%d\n",c,x,y);
   if(c!=-1){
-    printf("               val %d \n",p.r[c].val);
     if(c==0){
       sprintf(path_img,"assets/verso.png");
     }
@@ -43,10 +41,16 @@ int aff_carte(paquet p,int c,int x,int y){
 
 void aff_joueur(paquet p,joueur j){
   int i;
+  char s[3];
+  int carre=(MLV_get_desktop_width()*0.95)/22;
+  MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.3*carre);
   aff_carte(p,j.tas[1],16,8);
-  for(i=6;i<15;i+=2){
-    aff_carte(p,j.main[(i-4)/2],i,10);
-    aff_carte(p,j.defausse[(i-4)/2][1],i-1,8);
+  sprintf(s,"%d",j.tas[0]);
+  MLV_draw_filled_rectangle(1600,660,50,50,MLV_rgba(34,76,16,255));
+  MLV_draw_text_with_font(1620,680,s,font,MLV_rgba(13,53,16,255));
+  for(i=0;i<5;i++){
+    aff_carte(p,j.main[i+1],i*2+6,10);
+    aff_carte(p,j.defausse[i][1],i*2+5,8);
   }
   MLV_actualise_window();
 }
@@ -54,15 +58,12 @@ void aff_joueur(paquet p,joueur j){
 void aff_adv(paquet p,joueur j,int pos){
   int i,x;
   aff_carte(p,j.tas[1],4,2);
-  for(i=6;i<15;i+=2){
-    if(j.main[(i-4)/2]==-1){
-      x=-1;
-    }
-    else{
+  for(i=0;i<5;i++){
+    if(j.main[i]!=-1){
       x=0;
     }
-    aff_carte(p,x,i,0);             //main
-    aff_carte(p,j.defausse[(i-4)/2][1],i+1,2);   //defausse
+    aff_carte(p,x,i*2+6,0);             //main
+    aff_carte(p,j.defausse[i][1],i*2+7,2);   //defausse
   }
   MLV_actualise_window();
 }
@@ -70,7 +71,7 @@ void aff_adv(paquet p,joueur j,int pos){
 void aff_milieu(paquet p,milieu m){
   int i;
   aff_carte(p,0,15,5);
-  for(i=0;i<3;i++){
+  for(i=0;i<4;i++){
     aff_carte(p,m.m[i][1],i*2+6,5);
   }
   MLV_actualise_window();

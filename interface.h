@@ -4,6 +4,7 @@ typedef struct{
 } coord;
 
 
+
 void aff_joueur(paquet p,joueur j);
 void aff_milieu(paquet p,milieu m);
 void aff_adv(paquet p,joueur j,int pos);

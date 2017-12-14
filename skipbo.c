@@ -26,7 +26,6 @@
 // une qui actualise les zones de clic dispo   (dans une liste)
 
 
-int detetat(); // lancée pour vérifier l'état du jeu après déplacement d'une carte
 
 
 
@@ -53,32 +52,44 @@ void init_tas(joueur j[],milieu *m){
   m->pioche[0]=162;
 }
 
-void init_zone(int pos[][3]){
+void init_zone(coord pos[][2]){
   int i;
-  for(i=6;i<15;i+=2){
-    pos[(i-6)/2][0]=0;
-    pos[(i-6)/2][1]=i;
-    pos[(i-6)/2][2]=10;
-    pos[(i-6)/2+5][0]=1;
-    pos[(i-6)/2+5][1]=i-1;
-    pos[(i-6)/2+5][2]=8;
+  for(i=0;i<5;i++){
+    pos[i][0].x=1;
+    pos[i][0].y=i;
+    pos[i][1].x=i*2+6;
+    pos[i][1].y=10;
+
+    pos[i+5][0].x=2;
+    pos[i+5][0].y=i;
+    pos[i+5][1].x=i*2+5;
+    pos[i+5][1].y=8;
   }
-  pos[11][0]=2;
-  pos[11][1]=16;
-  pos[11][2]=8;
-  for(i=6;i<13;i+=2){
-    pos[12+(i-6)/2][0]=3;
-    pos[12+(i-6)/2][1]=i;
-    pos[12+(i-6)/2][2]=5;
+  pos[10][0].x=3;
+  pos[10][0].y=0;
+  pos[10][1].x=16;
+  pos[10][1].y=8;
+  for(i=0;i<4;i++){
+    pos[i+11][0].x=0;
+    pos[i+11][0].y=i;
+    pos[i+11][1].x=i*2+6;
+    pos[i+11][1].y=5;
   }
 }
 
+void bot(int ia,joueur b,milieu mil,int tasadv[],int nbj,coord *c,coord *r){
+
+}
+
 int main(int argc,char **argv){
-  int i,carre,tour,jNfini=1,r;
-  int zones[48][3],distrib[]={0,0,30,25,20};
+  int i,carre,tour,jNfini=1,tourpasfin=1,carte;
+  int distrib[]={0,0,30,25,20};
+  int tasadv[4];
   srand(time(NULL));
   options o;
-  coord c;
+  coord c,r,m,zones[48][2];
+  m.x=-1;
+  m.y=-1;
   paquet p;
   joueur j[4];
   milieu mil;
@@ -108,7 +119,6 @@ int main(int argc,char **argv){
   // au début du jeu on rempli le tas d'objectif (celui devant être vidé)
 
   tour=0;
-
   while(jNfini){
 
     if(tour==o.nbj){
@@ -116,27 +126,109 @@ int main(int argc,char **argv){
     }
 
     piocher(mil.pioche,j[tour].main,5);
-
+    tri_carte(p,j[tour].main);
     aff_joueur(p,j[0]);
     aff_adv(p,j[1],2);
     aff_milieu(p,mil);
-
-    while(1){
+    tourpasfin=1;
+    while(tourpasfin){
+      printf("tour %d\n",tour);
+      if(j[tour].ia!=0){
+        for(i=0;i<o.nbj;i++){
+          tasadv[i]=j[i].tas[1];
+        }
+        for(i=o.nbj;i<4;i++){
+          tasadv[i]=-1;
+        }
+        bot(j[tour].ia,j[tour],mil,tasadv,o.nbj,&c,&r);
+      }
       c=wait_inter(carre);
+      printf("x %d y %d\n",c.x,c.y);
       if(c.x==-1 && c.y==2){
         MLV_free_window();
         return 1;
       }
-      if(c.x!=0 && c.y!=0){
-        for(i=0;i<48;i++){
-          if(c.x==zones[i][1] && c.y==zones[i][2]){
+      if(c.x!=0 && c.y!=0 && c.x!=-1){
+        r.x=-1;
+        r.y=-1;
+
+        for(i=0;i<16;i++){
+          if(c.x==zones[i][1].x && c.y==zones[i][1].y ){
             r=zones[i][0];
+
           }
         }
       }
-      if(r==0){
+      printf("rx %d ry %d\n",r.x,r.y);
 
+      if(m.x==-1){
+        if(r.x>0){
+          m.x=r.x;
+          m.y=r.y;
+        }
       }
+      else{
+        if(m.x==0){
+          m.x=-1;
+        }
+        if(r.x!=-1){
+          if(m.x==tour*3+1){
+            carte=ret_carte_m(j[tour].main,m.y+1);
+            printf("retmain\n");
+            if(tour==0){
+              aff_joueur(p,j[0]);
+            }
+            else{
+              aff_adv(p,j[tour],tour+1);
+            }
+          }
+          if(m.x==tour*3+2 && r.x!=tour*3+2){
+            carte=ret_carte(j[tour].defausse[m.y]);
+            printf("retdefausse\n");
+            if(tour==0){
+              aff_joueur(p,j[0]);
+            }
+            else{
+              aff_adv(p,j[tour],tour+1);
+            }
+          }
+
+          if(m.x==(tour+1)*3){
+            carte=ret_carte(j[0].tas);
+            printf("rettas\n");
+            if(tour==0){
+              aff_joueur(p,j[0]);
+            }
+            else{
+              aff_adv(p,j[tour],tour+1);
+            }
+          }
+          if(r.x==0){
+            aj_carte(mil.m[r.y],carte);
+            printf("ajmil\n");
+            aff_milieu(p,mil);
+            m.x=-1;
+            carte=-1;
+          }
+          if(r.x==2){
+            aj_carte(j[0].defausse[r.y],carte);
+            aff_joueur(p,j[0]);
+            m.x=-1;
+            carte=-1;
+            //tour++;
+            tourpasfin=0;
+          }
+          if(r.x==5){
+            aj_carte(j[1].defausse[r.y],carte);
+            aff_joueur(p,j[1]);
+            m.x=-1;
+            carte=-1;
+            //tour++;
+            tourpasfin=0;
+          }
+        }
+      }
+
     }
   }
 
