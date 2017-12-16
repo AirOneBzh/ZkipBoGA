@@ -21,13 +21,16 @@ void winner(char *nom){
   MLV_stop_music();
   MLV_free_music(music);
   MLV_free_audio();
-}
+ }
+
 //fonction bruit de carte qui se pose
 
 void son_pose(){
   MLV_Sound* sound;
+  MLV_init_audio();
   sound = MLV_load_sound("assets/posecartes.ogg");
   MLV_play_sound(sound, 1.0);
+  MLV_wait_seconds(1);
   MLV_stop_all_sounds();
   MLV_free_sound(sound);
   MLV_free_audio();
@@ -37,17 +40,38 @@ void son_pose(){
 
 void son_mel(){
   MLV_Sound* sound;
-  sound = MLV_load_sound("assets/dist.mp3");
+  MLV_init_audio();
+  sound = MLV_load_sound("assets/dist.ogg");
   MLV_play_sound(sound, 1.0);
-  MLV_stop_all_sounds();
+  MLV_wait_seconds(7);
+  MLV_free_sound(sound);
+  MLV_free_audio();
+}
+
+void son_den(){
+   MLV_Sound* sound;
+  MLV_init_audio();
+  sound = MLV_load_sound("assets/denied.ogg");
+  MLV_play_sound(sound, 1.0);
+  MLV_wait_seconds(1);
+  MLV_free_sound(sound);
+  MLV_free_audio();
+}
+
+void son_you(){
+   MLV_Sound* sound;
+  MLV_init_audio();
+  sound = MLV_load_sound("assets/yourturn.ogg");
+  MLV_play_sound(sound, 1.0);
+  MLV_wait_seconds(7);
   MLV_free_sound(sound);
   MLV_free_audio();
 }
 
 int main(){
-  MLV_create_window("text", "text", 800, 800);
-
   son_pose();
   son_mel();
+  son_den();
+  son_you();
   return 0;
 }
