@@ -50,8 +50,10 @@ void aff_joueur(paquet p,joueur j){
   MLV_draw_text_with_font(1620,680,s,font,MLV_rgba(13,53,16,255));
   for(i=0;i<5;i++){
     aff_carte(p,j.main[i+1],i*2+6,10);
+    printf("def %d\n",j.defausse[i][1]);
     aff_carte(p,j.defausse[i][1],i*2+5,8);
   }
+  printf("nbcamain %d %d\n",j.main[0],j.main[1]);
   MLV_actualise_window();
 }
 

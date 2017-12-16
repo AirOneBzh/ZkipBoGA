@@ -29,18 +29,13 @@ void sous_bouton(char *nom,int x,int y,int n,int sel){   // x pour quel bouton v
   MLV_draw_text_box_with_font(bx,by,(4*0.8*carre)/n,0.8*carre,nom,font,0.7,text,text,fond,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,MLV_VERTICAL_CENTER);
 }
 
-// menuc nombre d'entrees, menuv titre menu
-int menufen(char *nom,options o){
-  int i;
-  coord c;
-  char tmp[10];
-  int tailleh = MLV_get_desktop_height()*0.65;
-  int carre = tailleh /10;
+void aff_menu(char *nom,int carre,options o){
 
-  MLV_create_window("Menu","Menu",((1.5*5)+2)*carre,tailleh);
+  int i;
+  char tmp[10];
 
   MLV_Image* header = MLV_load_image("assets/header.png");
-  MLV_resize_image(header,10*carre,carre);
+  MLV_resize_image(header,9.5*carre,carre);
 
   MLV_Color fond = MLV_rgba(40,40,40,255);        // variables à changer pour les couleurs du menu
   //MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.65*carre);
@@ -48,7 +43,7 @@ int menufen(char *nom,options o){
   MLV_clear_window(fond);
   MLV_draw_image(header,0.2*carre,0.1*carre);
   //Lancer jeu charger partie
-  bouton("ZkipBoGA",1);
+  bouton(nom,1);
   sous_bouton("Charger",1,1,2,0);
   sous_bouton("Stats",1,2,2,0);
   // Règles
@@ -66,10 +61,20 @@ int menufen(char *nom,options o){
   bouton("Affichage",4);
   sous_bouton("30",4,1,3,0);
   sous_bouton("50",4,2,3,0);
-  sous_bouton("70",4,3,3,1);
+  sous_bouton("F",4,3,3,1);
   //quitter
   bouton("Quitter",5);
   sous_bouton("Autres jeux",5,1,1,0);
+}
+
+// menuc nombre d'entrees, menuv titre menu
+int menufen(char *nom,options *o){
+  coord c;
+  int tailleh = MLV_get_desktop_height()*0.65;
+  int carre = tailleh /10;
+
+  MLV_create_window("Menu","Menu",((1.5*5)+2)*carre,tailleh);
+  aff_menu(nom,carre,*o);
 
 
   coord r;
@@ -96,6 +101,9 @@ int menufen(char *nom,options o){
       if(c.y==2){
         MLV_free_window();
         return 0;
+      }
+      if(c.y==3){
+        o->full=1;
       }
     }
 

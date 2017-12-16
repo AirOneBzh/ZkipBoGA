@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "jeu.h"
-paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[],int nbspe){
+paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,int jok){
   paquet p;
   int i,j,k;
   char ens[20];
@@ -22,7 +22,7 @@ paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,char cspe[]
 
   for(k=nbcaens*nbens;k<nbca;k++){
     p.r[k].val=0;                 // 0 = joker
-    strcpy(p.r[k].ens,cspe);
+    strcpy(p.r[k].ens,"joker");
   }
   return p;
 }
@@ -40,7 +40,6 @@ void init_cartes(int c[]){
 void aj_carte(int p[],int c){
   int i;
   for(i=p[0];i>=1;i--){
-
     p[i+1]=p[i];
   }
   p[0]++;
@@ -54,35 +53,38 @@ void echanger_cartes(int p[],int r,int m){
   p[m+1]=t;
 }
 
-void aj_carte_m(int p[],int c,int n){
-  int i;
-  if(p[n]!=-1){
-    for(i=p[0];i>=1;i--){
-      p[i+1]=p[i];
-    }
-  }
-  p[0]++;
-  p[n]=c;
-}
-// prends une carte position m et la remplace par le vide
-int ret_carte_m(int p[],int n){
-  int c=p[n];
-  p[n]=-1;
-  p[0]--;
-  return c;
-}
+
+
 // prends une carte en position n et décale la suite (pour ne laisser aucun vide)
 int ret_carte_n(int p[],int n){
-  int i,c;
-  c=ret_carte_m(p,n);
+  int i,c=p[n];
+  p[n]=-1;
+  p[0]--;
   for(i=n;i<=p[0];i++){
     p[i]=p[i+1];
   }
+  p[p[0]+1]=-1;
   return c;
 }
 // pioche une carte sur le dessus de la pile
 int ret_carte(int p[]){
   return ret_carte_n(p,1);
+}
+
+void retirer_paquet(paquet *p,int pioche[],int m[]){
+  int i=0,c;
+  printf("retpack %d ",m[0]);
+  while(m[0]!=0){
+    c=ret_carte(m);
+    printf("ret paq %d %d %s",c,m[0],p->r[c].ens);
+    if(strcmp(p->r[c].ens,"joker")==0){
+      p->r[c].val=0;
+    }
+    printf(" aj_car pio %d %d \n",c,p->r[c].val);
+    aj_carte(pioche,c);
+    i++;
+  }
+  mel_pioche(pioche);
 }
 
 void tri_carte(paquet p,int c[]){
@@ -109,11 +111,15 @@ void mel_pioche(int p[]){
 int piocher(int pioche[],int main[],int n){
   // son_dist
   int c;
+  // sondist
   while(main[0]<n){
-    // depl_carte pioche.carte[] main[]
+    // MLV_wait_seconds(0.5);
     c=ret_carte(pioche);
+    printf("pioche %d\n",c);
     aj_carte(main,c);
   }
+  //stop_allsounds
+  
   return 1;
 
 } // donne cartes (max n )
