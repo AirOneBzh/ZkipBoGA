@@ -38,12 +38,12 @@ void son_pose(){
 
 //fonction bruit de mélange de cartes
 
-void son_mel(){
+void son_mel(int n){
   MLV_Sound* sound;
   MLV_init_audio();
   sound = MLV_load_sound("assets/dist.ogg");
   MLV_play_sound(sound, 1.0);
-  MLV_wait_seconds(7);
+  MLV_wait_seconds(n);
   MLV_free_sound(sound);
   MLV_free_audio();
 }
@@ -63,15 +63,7 @@ void son_you(){
   MLV_init_audio();
   sound = MLV_load_sound("assets/yourturn.ogg");
   MLV_play_sound(sound, 1.0);
-  MLV_wait_seconds(7);
+  MLV_wait_seconds(2);
   MLV_free_sound(sound);
   MLV_free_audio();
-}
-
-int main(){
-  son_pose();
-  son_mel();
-  son_den();
-  son_you();
-  return 0;
 }

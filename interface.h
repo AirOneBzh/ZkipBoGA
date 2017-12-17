@@ -3,7 +3,10 @@ typedef struct{
   int y;
 } coord;
 
-
+typedef struct{
+  coord d;
+  coord a;
+}coord_dep;
 
 void aff_joueur(paquet p,joueur j);
 void aff_milieu(paquet p,milieu m);

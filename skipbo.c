@@ -7,6 +7,8 @@
 #include "interface.h"
 #include "time.h"
 #include "extras.h"
+#include "save.h"
+#include <time.h>
 /// éléments
 // pioche
 // pile milieu (4)
@@ -100,7 +102,7 @@ void init_zone(coord pos[][2]){
     pos[i+11][1].y=5;
   }
 }
-
+//coord_dep dep   dep.d = c  dep.a = r
 void bot(int ia,joueur b,milieu mil,int tasadv[],int nbj,coord *c,coord *r){
 
 }
@@ -119,14 +121,13 @@ void echap(int *u){
   MLV_actualise_window();
   while(sym!=MLV_KEYBOARD_ESCAPE && *u!='q' && *u!='f' && *u!='s'){
     MLV_wait_keyboard_or_mouse(&sym, &mod, u, &x, &y);
-    printf("eecchhh x %d y%d \n",x,y);
   }
   reset_fen();
 }
 
 int main(int argc,char **argv){
   int i,carre,tour,jNfini=1,tourpasfin=1,carte,u=0;
-  int distrib[]={0,0,30,25,20};
+  int distrib[]={0,0,2,25,20};
   int tasadv[4];
   srand(time(NULL));
   options o;
@@ -148,12 +149,21 @@ int main(int argc,char **argv){
   if(menufen("ZkipBoGA",&o)==0){
     return 0;
   }
-
-  carre=(MLV_get_desktop_width()*0.95)/22;
+  char *nom;
+  carre=(MLV_get_desktop_width()*o.pourc/100)/22;
   fenetre(carre*22,carre*11);
+  int tailleh = MLV_get_window_height();
+  int taillew = MLV_get_window_width();
   printf("full %d \n",o.full);
-  if(o.full){
+  if(o.full==1){
     MLV_enable_full_screen();
+  }
+
+  for(i=0;i<4;i++){
+    if(o.ia[i]!=-1){
+      strcpy(j[i].nom,o.nom[i]);
+    }
+    j[i].ia=o.ia[i];
   }
 
   cadresel=MLV_load_image("assets/CadreSel.png");
@@ -167,7 +177,7 @@ int main(int argc,char **argv){
   reset_fen();
   init_tas(j,&mil);
   init_zone(zones);
-
+  son_mel(5);
   mel_pioche(mil.pioche);
   for(i=0;i<o.nbj;i++){
     piocher(mil.pioche,j[i].tas,distrib[o.nbj]);
@@ -184,12 +194,18 @@ int main(int argc,char **argv){
       tour=0;
     }
 
+    aff_milieu(p,mil);
+    if(o.son==1){
+      son_mel(3);
+    }
     piocher(mil.pioche,j[tour].main,5);
     //tri_carte(p,j[tour].main);
     aff_joueur(p,j[0]);
     aff_adv(p,j[1],2);
-    aff_milieu(p,mil);
     tourpasfin=1;
+    if(o.son==1){
+      son_you();
+    }
     while(tourpasfin){
 
       if(j[tour].ia!=0){
@@ -202,6 +218,10 @@ int main(int argc,char **argv){
         bot(j[tour].ia,j[tour],mil,tasadv,o.nbj,&c,&r);
       }
       if(j[tour].main[0]==0){
+        if(o.son==1){
+          son_pose();
+        }
+
         piocher(mil.pioche,j[tour].main,5);
         aff_joueur(p,j[0]);
       }
@@ -224,9 +244,17 @@ int main(int argc,char **argv){
         }
         printf("u%d %c\n",u,u);
         if(c.y==1 || u=='s'){
-          //save
+          MLV_wait_input_box(
+            taillew*0.3,tailleh*0.45,
+            taillew*0.4,tailleh*0.1,
+            MLV_COLOR_RED, MLV_COLOR_GREEN, MLV_COLOR_BLACK,
+            "Nom de la partie : ",
+            &nom
+          );
+          save(nom,j,mil,o);
         }
         if(c.y==2 || u=='q'){  //q
+          if(nom)
           MLV_free_window();
           return 1;
         }
@@ -241,6 +269,9 @@ int main(int argc,char **argv){
           aff_joueur(p,j[0]);
           aff_adv(p,j[1],2);
           aff_milieu(p,mil);
+        }
+        if(c.y==4){
+          o.son=1-o.son;
         }
       }
 
@@ -323,39 +354,54 @@ int main(int argc,char **argv){
             printf("carte%d\n",carte);
             if(carte!=-1 || (r.x==1 && m.x==1)){
               if(r.x==0){
+
+
                 aj_carte(mil.m[r.y],carte);
                 printf("ajmil %d\n",p.r[mil.m[r.y][1]].val);
                 if(mil.m[r.y][0]==12){
                   retirer_paquet(&p,mil.pioche,mil.m[r.y]);
                 }
                 aff_milieu(p,mil);
+                if(o.son==1){
+                  son_pose();
+                }
                 m.x=-1;
                 carte=-1;
               }
               printf("aarx %d aary %d\naamx %d aamy %d\n",r.x,r.y,m.x,m.y);
               if(r.x==1 && m.x==1){
+
                 echanger_cartes(j[0].main,r.y,m.y);
                 r.x=-1;
                 m.x=-1;
                 printf("changer cartes main");
                 aff_joueur(p,j[0]);
+                if(o.son==1){
+                  son_pose();
+                  son_pose();
+                }
               }
 
               if(r.x==2 && m.x!=3){
-                printf("deff");
 
-                printf("j[0]defajcarte %d \n",j[0].defausse[0][0]);
                 aj_carte(j[0].defausse[r.y],carte);
                 aff_joueur(p,j[0]);
                 m.x=-1;
                 carte=-1;
+                if(o.son==1){
+                  son_pose();
+                }
                 //tour++;
                 tourpasfin=0;
               }
 
               if(r.x==5){
+
                 aj_carte(j[1].defausse[r.y],carte);
                 aff_joueur(p,j[1]);
+                if(o.son==1){
+                  son_pose();
+                }
                 m.x=-1;
                 carte=-1;
                 //tour++;
@@ -366,7 +412,9 @@ int main(int argc,char **argv){
           else{
             MLV_draw_image(cadreechec,(oc.x-0.05)*carre,(oc.y-0.05)*carre);
             MLV_actualise_window();
-            MLV_wait_seconds(2);
+            if(o.son==1){
+              son_den();
+            }
           }
           carte=-1;
           r.x=-1;
@@ -381,7 +429,9 @@ int main(int argc,char **argv){
         MLV_draw_image(cadredesel,(oc.x-0.05)*carre,(oc.y-0.05)*carre);
         MLV_actualise_window();
       }
-
+      if(j[tour].tas[0]==0){
+        winner(j[tour].nom);
+      }
     }
   }
 
@@ -390,5 +440,6 @@ int main(int argc,char **argv){
   MLV_free_image(cadredesel);
   MLV_free_image(cadresel);
   MLV_free_window();
+  MLV_free_audio();
   return 1;
 }

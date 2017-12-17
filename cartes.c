@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "extras.h"
 
 #include "jeu.h"
 paquet creer_paquet(int nbca,int nbens,char lcens[30][5],int nbcaens,int jok){
@@ -109,11 +110,13 @@ int piocher(int pioche[],int main[],int n){
   // son_dist
   int c;
   // sondist
+  
   while(main[0]<n){
     // MLV_wait_seconds(0.5);
     c=ret_carte(pioche);
     aj_carte(main,c);
   }
+
   //stop_allsounds
 
   return 1;

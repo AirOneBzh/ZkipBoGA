@@ -59,10 +59,10 @@ void aff_joueur(paquet p,joueur j){
 
 void aff_adv(paquet p,joueur j,int pos){
   int i,x;
-    char s[3];
+  char s[3];
   int carre=(MLV_get_desktop_width()*0.95)/22;
   MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.3*carre);
-    sprintf(s,"%d",j.tas[0]);
+  sprintf(s,"%d",j.tas[0]);
   MLV_draw_filled_rectangle(5.37*carre,1.39*carre,0.53*carre,0.53*carre,MLV_rgba(34,76,16,255));
   MLV_draw_text_with_font(5.43*carre,1.39*carre,s,font,MLV_rgba(13,53,16,255));
 
@@ -120,6 +120,12 @@ coord wait_inter(int taille){
     }
     if(keyb==MLV_KEYBOARD_f){
       c.y=3;
+    }
+    if(keyb==MLV_KEYBOARD_f){
+      c.y=3;
+    }
+    if(keyb==MLV_KEYBOARD_m){
+      c.y=4;
     }
 
     return c;
