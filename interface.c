@@ -46,17 +46,26 @@ void aff_joueur(paquet p,joueur j){
   MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.3*carre);
   aff_carte(p,j.tas[1],16,8);
   sprintf(s,"%d",j.tas[0]);
-  MLV_draw_filled_rectangle(1600,660,50,50,MLV_rgba(34,76,16,255));
-  MLV_draw_text_with_font(1620,680,s,font,MLV_rgba(13,53,16,255));
+  MLV_draw_filled_rectangle(17.2*carre,7.1*carre,0.53*carre,0.53*carre,MLV_rgba(34,76,16,255));
+  MLV_draw_text_with_font(17.42*carre,7.3*carre,s,font,MLV_rgba(13,53,16,255));
   for(i=0;i<5;i++){
     aff_carte(p,j.main[i+1],i*2+6,10);
+    printf("def %d\n",j.defausse[i][1]);
     aff_carte(p,j.defausse[i][1],i*2+5,8);
   }
+  printf("nbcamain %d %d\n",j.main[0],j.main[1]);
   MLV_actualise_window();
 }
 
 void aff_adv(paquet p,joueur j,int pos){
   int i,x;
+    char s[3];
+  int carre=(MLV_get_desktop_width()*0.95)/22;
+  MLV_Font* font=MLV_load_font("assets/pricedown.ttf",0.3*carre);
+    sprintf(s,"%d",j.tas[0]);
+  MLV_draw_filled_rectangle(5.37*carre,1.39*carre,0.53*carre,0.53*carre,MLV_rgba(34,76,16,255));
+  MLV_draw_text_with_font(5.43*carre,1.39*carre,s,font,MLV_rgba(13,53,16,255));
+
   aff_carte(p,j.tas[1],4,2);
   for(i=0;i<5;i++){
     if(j.main[i]!=-1){
@@ -70,10 +79,12 @@ void aff_adv(paquet p,joueur j,int pos){
 
 void aff_milieu(paquet p,milieu m){
   int i;
+  int carre = MLV_get_window_height()/11;
   aff_carte(p,0,15,5);
   for(i=0;i<4;i++){
     aff_carte(p,m.m[i][1],i*2+6,5);
   }
+  MLV_draw_text_box(0.1*carre,carre*0.3,carre*1.3,carre*0.6,"Raccourcis (Esc)",1,MLV_COLOR_BLACK,MLV_COLOR_BLACK,MLV_COLOR_WHITE,MLV_TEXT_CENTER,MLV_HORIZONTAL_CENTER,MLV_VERTICAL_CENTER);
   MLV_actualise_window();
 }
 
@@ -110,6 +121,7 @@ coord wait_inter(int taille){
     if(keyb==MLV_KEYBOARD_f){
       c.y=3;
     }
+
     return c;
   }
   else if(r==MLV_MOUSE_BUTTON){
@@ -123,56 +135,58 @@ coord wait_inter(int taille){
 
 coord conv_to_menu(coord c){
   coord r;
-  int tailleh = MLV_get_desktop_height()*0.65;
+  int tailleh = MLV_get_window_height();
+  int taillew = MLV_get_window_width();
+  printf("taille w %d \n",taillew);
   int carre = tailleh /10;
-  if(c.x>46 && c.x<46+8.5*carre){
-    if(c.y>232 && c.y<232+carre){
+  if(c.x>taillew/19.2 && c.x<taillew/19.2+8.5*carre){
+    if(c.y>tailleh/4.034 && c.y<tailleh/4.034+carre){
       r.x=1;
       r.y=0;
-      if(c.x>465 && c.x<613){
+      if(c.x>taillew/1.8989 && c.x<taillew/1.44){
         r.y=1;
       }
-      if(c.x>651 && c.x<800){
+      if(c.x>taillew/1.35 && c.x<taillew/1.1){
         r.y=2;
       }
     }
-    if(c.y>372 && c.y<372+carre){
+    if(c.y>tailleh/2.51 && c.y<tailleh/2.51+carre){
       r.x=2;
       r.y=0;
-      if(c.x>465 && c.x<613){
+      if(c.x>taillew/1.8989 && c.x<taillew/1.44){
         r.y=1;
       }
-      if(c.x>651 && c.x<800){
+      if(c.x>taillew/1.35 && c.x<taillew/1.1){
         r.y=2;
       }
     }
-    if(c.y>511 && c.y<511+carre){
+    if(c.y>tailleh/1.83 && c.y<tailleh/1.83+carre){
       r.x=3;
       r.y=0;
-      if(c.x>465 && c.x<613){
+      if(c.x>taillew/1.8989 && c.x<taillew/1.44){
         r.y=1;
       }
-      if(c.x>651 && c.x<800){
+      if(c.x>taillew/1.35 && c.x<taillew/1.1){
         r.y=2;
       }
     }
-    if(c.y>651 && c.y<651+carre){
+    if(c.y>tailleh/1.4377 && c.y<tailleh/1.4377+carre){
       r.x=4;
       r.y=0;
-      if(c.x>465 && c.x<564){
+      if(c.x>taillew/1.8989 && c.x<taillew/1.5656){
         r.y=1;
       }
-      if(c.x>582 && c.x<688){
+      if(c.x>taillew/1.5171 && c.x<taillew/1.28){
         r.y=2;
       }
-      if(c.x>713 && c.x<812){
+      if(c.x>taillew/1.23 && c.x<taillew/1.08){
         r.y=3;
       }
     }
-    if(c.y>790 && c.y<790+carre){
+    if(c.y>tailleh/1.1858 && c.y<tailleh/1.1848+carre){
       r.x=5;
       r.y=0;
-      if(c.x>465 && c.x<762){
+      if(c.x>taillew/1.8989 && c.x<taillew/1.1587){
         r.y=1;
       }
     }

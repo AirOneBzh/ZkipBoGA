@@ -1,0 +1,95 @@
+void case_carte(int pos[][3],int x,int y,int *a,int *b){
+  int i;
+  for(i=0;i<15;i++){
+    printf("x%d y%d posx %d posy %d\n",x,y,pos[i][1],pos[i][2]);
+    if(pos[i][1]==x && pos[i][2]==y){
+      *a=pos[i][0];
+      *b=(pos[i][1]-4)/2;
+      break;
+    }
+  }
+  printf("a%d b%d\n",*a,*b);
+}
+
+reset_fen();
+
+
+
+while(jeupasfin){
+  if(tour_j>o.nbj){
+    tour_j-=o.nbj;
+  }
+
+  piocher(m.pioche,j[tour_j].main,5);
+
+  if(j[tour_j].ia==0){
+    aff_joueur(p,j[tour_j]);
+    aff_adv(p,j[o.nbj-tour_j],2);
+  }
+
+  aff_milieu(p,m);
+
+  int x,y,pasfin=1,c=-1,selx=-1,sely,ox,oy;
+
+  while(pasfin!=0){
+    ox=x;
+    oy=y;
+    wait_inter(&x,&y,taille);
+
+    if(x==-1 && y==0){
+      printf("ECHAP %d\n",pasfin);
+      jeupasfin=pasfin=0;
+      break;
+    }
+
+    case_carte(pos,x,y,&a,&b);
+
+    if(selx==-1){
+      selx=a;
+      sely=b;
+      MLV_draw_rectangle(x*taille-1,y*taille-1,taille+2,taille+2,MLV_COLOR_WHITE);
+    }
+
+    else{
+      if(selx==0){
+        c=ret_carte_m(j[0].main,sely);
+      }
+
+      if(selx==1){
+        c=ret_carte(j[0].defausse[sely]);
+      }
+
+      if(a==1){
+        aj_carte(j[0].defausse[b-1],c);
+        pasfin=0;
+        tour_j++;
+      }
+
+      if(a==3){
+        aj_carte(m.m[b-1],c);
+      }
+
+      MLV_draw_rectangle(ox*taille-1,oy*taille-1,taille+2,taille+2,MLV_rgba(34,76,16,255));
+      selx=-1;
+    }
+
+    aff_joueur(p,j[0]);
+    aff_milieu(p,m);
+  }
+
+  printf("inter %d %d \n",x,y);
+}
+
+
+
+
+
+header mettre zngac
+
+lancer jeu
+regles
+joueurs / bots
+affichage %écran 3poss
+Quitter / trouver un autre jeu
+
+Lien vers github pour trouver les autres jeux
