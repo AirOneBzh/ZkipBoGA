@@ -6,6 +6,7 @@
 #include <MLV/MLV_all.h>
 #include "interface.h"
 #include "time.h"
+#include "extras.h"
 /// éléments
 // pioche
 // pile milieu (4)
@@ -104,13 +105,32 @@ void bot(int ia,joueur b,milieu mil,int tasadv[],int nbj,coord *c,coord *r){
 
 }
 
+void echap(int *u){
+  *u='a';
+  MLV_Keyboard_button sym;
+  MLV_Keyboard_modifier mod;
+  int x=0, y=0;
+  int tailleh = MLV_get_window_height();
+  int taillew = MLV_get_window_width();
+  MLV_draw_filled_rectangle(taillew*0.05,tailleh*0.3,taillew*0.1,tailleh*0.2,MLV_rgba(0,0,0,150));
+  MLV_draw_text(140,350,"(Q)uit",MLV_COLOR_WHITE);
+  MLV_draw_text(140,400,"(S)ave",MLV_COLOR_WHITE);
+  MLV_draw_text(140,450,"(F)ullscreen",MLV_COLOR_WHITE);
+  MLV_actualise_window();
+  while(sym!=MLV_KEYBOARD_ESCAPE && *u!='q' && *u!='f' && *u!='s'){
+    MLV_wait_keyboard_or_mouse(&sym, &mod, u, &x, &y);
+    printf("eecchhh x %d y%d \n",x,y);
+  }
+  reset_fen();
+}
+
 int main(int argc,char **argv){
-  int i,carre,tour,jNfini=1,tourpasfin=1,carte;
+  int i,carre,tour,jNfini=1,tourpasfin=1,carte,u=0;
   int distrib[]={0,0,30,25,20};
   int tasadv[4];
   srand(time(NULL));
   options o;
-  coord c,r,m,zones[48][2];
+  coord c,oc,r,m,zones[48][2];
   m.x=-1;
   m.y=-1;
   paquet p;
@@ -152,11 +172,14 @@ int main(int argc,char **argv){
   for(i=0;i<o.nbj;i++){
     piocher(mil.pioche,j[i].tas,distrib[o.nbj]);
   }
+  for(i=0;i<o.nbj;i++){
+    j[i].defausse[0][0]=0;
+  }
+
   // au début du jeu on rempli le tas d'objectif (celui devant être vidé)
 
   tour=0;
   while(jNfini){
-
     if(tour==o.nbj){
       tour=0;
     }
@@ -168,7 +191,7 @@ int main(int argc,char **argv){
     aff_milieu(p,mil);
     tourpasfin=1;
     while(tourpasfin){
-      printf("tour %d\n",tour);
+
       if(j[tour].ia!=0){
         for(i=0;i<o.nbj;i++){
           tasadv[i]=j[i].tas[1];
@@ -184,12 +207,30 @@ int main(int argc,char **argv){
       }
       c=wait_inter(carre);
       printf("x %d y %d\n",c.x,c.y);
+      if(c.x==0 && c.y==0){  //clic raccourcis
+        printf("clic racc");
+        echap(&u);
+        aff_joueur(p,j[0]);
+        aff_adv(p,j[1],2);
+        aff_milieu(p,mil);
+      }
       if(c.x==-1){
-        if(c.y==2){
+        if(c.y==0 && u==0){   //echap
+          printf("echap");
+          echap(&u);
+          aff_joueur(p,j[0]);
+          aff_adv(p,j[1],2);
+          aff_milieu(p,mil);
+        }
+        printf("u%d %c\n",u,u);
+        if(c.y==1 || u=='s'){
+          //save
+        }
+        if(c.y==2 || u=='q'){  //q
           MLV_free_window();
           return 1;
         }
-        if(c.y==3){
+        if(c.y==3 || u=='f'){   //f
           if(MLV_is_full_screen()){
             MLV_disable_full_screen();
           }
@@ -202,6 +243,7 @@ int main(int argc,char **argv){
           aff_milieu(p,mil);
         }
       }
+
       if(c.x!=0 && c.y!=0 && c.x!=-1){
         r.x=-1;
         r.y=-1;
@@ -213,13 +255,16 @@ int main(int argc,char **argv){
           }
         }
       }
-      printf("rx %d ry %d\n",r.x,r.y);
+      printf("rx %d ry %d\nmx %d my %d\n",r.x,r.y,m.x,m.y);
 
       if(m.x==-1){
         if(r.x>0){
           m.x=r.x;
           m.y=r.y;
-          MLV_draw_image(cadresel,(c.x-0.5)*carre,(c.y-0.5)*carre);
+          oc.x=c.x;
+          oc.y=c.y;
+          MLV_draw_image(cadresel,(c.x-0.05)*carre,(c.y-0.05)*carre);
+          MLV_actualise_window();
           carte=-1;
         }
       }
@@ -231,91 +276,110 @@ int main(int argc,char **argv){
 
         //départ
         if(r.x!=-1){
+
           if(m.x==tour*3+1 && r.x !=tour*3+1){
-            carte=ret_carte_n(j[tour].main,m.y+1);
-            printf("retmain%d\n",carte);
-            if(tour==0){
-              aff_joueur(p,j[0]);
-            }
-            else{
-              aff_adv(p,j[tour],tour+1);
-            }
+            carte=j[tour].main[m.y+1];
           }
           if(m.x==tour*3+2 && r.x!=tour*3+2){
-            carte=ret_carte(j[tour].defausse[m.y]);
-            printf("retdefausse%d\n",carte);
-            if(tour==0){
-              aff_joueur(p,j[0]);
-            }
-            else{
-              aff_adv(p,j[tour],tour+1);
-            }
+            carte=j[tour].defausse[m.y][1];
           }
 
           if(m.x==(tour+1)*3 && r.x==0){
-            carte=ret_carte(j[0].tas);
-            printf("carteeee%d\n",carte);
-            printf("rettas%d\n",carte);
-            if(tour==0){
-              aff_joueur(p,j[0]);
+            carte=j[0].tas[1];
+          }
+          //////////////
+          if((r.x==0 && pos_poss(&p,mil.m[r.y],carte)) || r.x!=0){
+            if(m.x==tour*3+1 && r.x !=tour*3+1){
+              ret_carte_n(j[tour].main,m.y+1);
+              if(tour==0){
+                aff_joueur(p,j[0]);
+              }
+              else{
+                aff_adv(p,j[tour],tour+1);
+              }
             }
-            else{
-              aff_adv(p,j[tour],tour+1);
+            if(m.x==tour*3+2 && r.x!=tour*3+2 && r.x!=tour*3+1){
+              ret_carte(j[tour].defausse[m.y]);
+              if(tour==0){
+                aff_joueur(p,j[0]);
+              }
+              else{
+                aff_adv(p,j[tour],tour+1);
+              }
+            }
+
+            if(m.x==(tour+1)*3 && r.x==0){
+              ret_carte(j[0].tas);
+              if(tour==0){
+                aff_joueur(p,j[0]);
+              }
+              else{
+                aff_adv(p,j[tour],tour+1);
+              }
+            }
+
+            //  Arrivé
+            //
+            printf("carte%d\n",carte);
+            if(carte!=-1 || (r.x==1 && m.x==1)){
+              if(r.x==0){
+                aj_carte(mil.m[r.y],carte);
+                printf("ajmil %d\n",p.r[mil.m[r.y][1]].val);
+                if(mil.m[r.y][0]==12){
+                  retirer_paquet(&p,mil.pioche,mil.m[r.y]);
+                }
+                aff_milieu(p,mil);
+                m.x=-1;
+                carte=-1;
+              }
+              printf("aarx %d aary %d\naamx %d aamy %d\n",r.x,r.y,m.x,m.y);
+              if(r.x==1 && m.x==1){
+                echanger_cartes(j[0].main,r.y,m.y);
+                r.x=-1;
+                m.x=-1;
+                printf("changer cartes main");
+                aff_joueur(p,j[0]);
+              }
+
+              if(r.x==2 && m.x!=3){
+                printf("deff");
+
+                printf("j[0]defajcarte %d \n",j[0].defausse[0][0]);
+                aj_carte(j[0].defausse[r.y],carte);
+                aff_joueur(p,j[0]);
+                m.x=-1;
+                carte=-1;
+                //tour++;
+                tourpasfin=0;
+              }
+
+              if(r.x==5){
+                aj_carte(j[1].defausse[r.y],carte);
+                aff_joueur(p,j[1]);
+                m.x=-1;
+                carte=-1;
+                //tour++;
+                tourpasfin=0;
+              }
             }
           }
-
-          //  Arrivé
-          //
-          printf("carte%d\n",carte);
-          if(carte!=-1){
-            if(r.x==0){
-              printf("posposs %d\n",pos_poss(&p,mil.m[r.y],carte));
-              aj_carte(mil.m[r.y],carte);
-              printf("ajmil %d\n",p.r[mil.m[r.y][1]].val);
-              if(mil.m[r.y][0]==12){
-                retirer_paquet(&p,mil.pioche,mil.m[r.y]);
-              }
-              aff_milieu(p,mil);
-              m.x=-1;
-              carte=-1;
-            }
-
-            if(r.x==1 && m.x==1){
-              echanger_cartes(j[0].main,r.y,m.y);
-              r.x=-1;
-              m.x=-1;
-              printf("changer cartes main");
-              aff_joueur(p,j[0]);
-            }
-
-            if(r.x==2 && m.x!=3){
-              aj_carte(j[0].defausse[r.y],carte);
-              aff_joueur(p,j[0]);
-              m.x=-1;
-              carte=-1;
-              //tour++;
-              tourpasfin=0;
-            }
-
-            if(r.x==5){
-              aj_carte(j[1].defausse[r.y],carte);
-              aff_joueur(p,j[1]);
-              m.x=-1;
-              carte=-1;
-              //tour++;
-              tourpasfin=0;
-            }
+          else{
+            MLV_draw_image(cadreechec,(oc.x-0.05)*carre,(oc.y-0.05)*carre);
+            MLV_actualise_window();
+            MLV_wait_seconds(2);
           }
           carte=-1;
           r.x=-1;
           m.x=-1;
-          MLV_draw_image(cadredesel,(c.x-0.05)*carre,(c.y-0.05)*carre);
+
           printf("carteaprès   %d\n",carte);
 
         }
         else{
           m.x=-1;
         }
+        MLV_draw_image(cadredesel,(oc.x-0.05)*carre,(oc.y-0.05)*carre);
+        MLV_actualise_window();
       }
 
     }

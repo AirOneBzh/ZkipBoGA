@@ -73,14 +73,11 @@ int ret_carte(int p[]){
 
 void retirer_paquet(paquet *p,int pioche[],int m[]){
   int i=0,c;
-  printf("retpack %d ",m[0]);
   while(m[0]!=0){
     c=ret_carte(m);
-    printf("ret paq %d %d %s",c,m[0],p->r[c].ens);
     if(strcmp(p->r[c].ens,"joker")==0){
       p->r[c].val=0;
     }
-    printf(" aj_car pio %d %d \n",c,p->r[c].val);
     aj_carte(pioche,c);
     i++;
   }
@@ -115,11 +112,10 @@ int piocher(int pioche[],int main[],int n){
   while(main[0]<n){
     // MLV_wait_seconds(0.5);
     c=ret_carte(pioche);
-    printf("pioche %d\n",c);
     aj_carte(main,c);
   }
   //stop_allsounds
-  
+
   return 1;
 
 } // donne cartes (max n )

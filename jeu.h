@@ -9,7 +9,7 @@ typedef struct {
   int tas[30];   //30
   int defausse[5][30];   // def[i].nb=
   int main[6];     // main[0].val=nb cartes en main
-} joueur ;
+} joueur;
 
 typedef struct{
   int pioche[163];

@@ -72,7 +72,7 @@ int menufen(char *nom,options *o){
   coord c;
   int tailleh = MLV_get_desktop_height()*0.65;
   int carre = tailleh /10;
-
+  printf("taille h %d \n",tailleh);
   MLV_create_window("Menu","Menu",((1.5*5)+2)*carre,tailleh);
   aff_menu(nom,carre,*o);
 
@@ -92,6 +92,9 @@ int menufen(char *nom,options *o){
       if(r.x==2 && r.y==0){
         printf("README");
       }
+      if(r.x==4 && r.y==3){
+        o->full=3;
+      }
       if(r.x==5 && r.y==0){
         MLV_free_window();
         return 0;
@@ -106,10 +109,6 @@ int menufen(char *nom,options *o){
         o->full=1;
       }
     }
-
-
-
-
   }
 
   MLV_free_window();
