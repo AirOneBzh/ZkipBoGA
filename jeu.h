@@ -26,8 +26,8 @@ typedef struct {
   int son;
 } options;
 
-int menufen(char *nom,options *o);
-int fenetre(int l,int h);
+int menufen(char *nom,options *o); //fenêtre du menu
+int fenetre(int l,int h);//menu du jeu
 #endif
 
 
