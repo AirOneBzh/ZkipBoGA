@@ -127,7 +127,7 @@ void echap(int *u){
 
 int main(int argc,char **argv){
   int i,carre,tour,jNfini=1,tourpasfin=1,carte,u=0;
-  int distrib[]={0,0,2,25,20};
+  int distrib[]={0,0,30,25,20};
   int tasadv[4];
   srand(time(NULL));
   options o;
@@ -145,8 +145,11 @@ int main(int argc,char **argv){
   }
 
   o.nbj=2;  // normalement 4 mais on limite pour le début
+  conf confjeu;
+
   p=creer_paquet(162,12,lcens,12,18);
-  if(menufen("ZkipBoGA",&o)==0){
+  int mf=menufen("ZkipBoGA",&o,&confjeu);
+  if(mf==0){
     return 0;
   }
   char *nom;
@@ -154,18 +157,37 @@ int main(int argc,char **argv){
   fenetre(carre*22,carre*11);
   int tailleh = MLV_get_window_height();
   int taillew = MLV_get_window_width();
-  printf("full %d \n",o.full);
-  if(o.full==1){
-    MLV_enable_full_screen();
+  printf("full %d %d\n",o.full,o.son);
+  reset_fen();
+  if(mf==2){
+    o=confjeu.o;
   }
-
-  for(i=0;i<4;i++){
-    if(o.ia[i]!=-1){
-      strcpy(j[i].nom,o.nom[i]);
+  else{
+    if(o.full==1){
+      MLV_enable_full_screen();
     }
-    j[i].ia=o.ia[i];
-  }
 
+    for(i=0;i<4;i++){
+      if(o.ia[i]!=-1){
+        strcpy(j[i].nom,o.nom[i]);
+      }
+      j[i].ia=o.ia[i];
+    }
+
+
+    init_tas(j,&mil);
+    init_zone(zones);
+    if(o.son==1){
+      son_mel(5);
+    }
+    mel_pioche(mil.pioche);
+    for(i=0;i<o.nbj;i++){
+      piocher(mil.pioche,j[i].tas,distrib[o.nbj]);
+    }
+    for(i=0;i<o.nbj;i++){
+      j[i].defausse[0][0]=0;
+    }
+  }
   cadresel=MLV_load_image("assets/CadreSel.png");
   cadredesel= MLV_load_image("assets/CadreDeSel.png");
   cadreechec= MLV_load_image("assets/CadreEchec.png");
@@ -175,17 +197,6 @@ int main(int argc,char **argv){
   MLV_resize_image(cadresel,carre*1.1,carre*1.1);
 
   reset_fen();
-  init_tas(j,&mil);
-  init_zone(zones);
-  son_mel(5);
-  mel_pioche(mil.pioche);
-  for(i=0;i<o.nbj;i++){
-    piocher(mil.pioche,j[i].tas,distrib[o.nbj]);
-  }
-  for(i=0;i<o.nbj;i++){
-    j[i].defausse[0][0]=0;
-  }
-
   // au début du jeu on rempli le tas d'objectif (celui devant être vidé)
 
   tour=0;
@@ -207,7 +218,6 @@ int main(int argc,char **argv){
       son_you();
     }
     while(tourpasfin){
-
       if(j[tour].ia!=0){
         for(i=0;i<o.nbj;i++){
           tasadv[i]=j[i].tas[1];
@@ -243,7 +253,8 @@ int main(int argc,char **argv){
           aff_milieu(p,mil);
         }
         printf("u%d %c\n",u,u);
-        if(c.y==1 || u=='s'){
+        if(c.y==1 || u=='s' || c.y==2 || u=='q'){
+          if(o.partie[0]=='\0')
           MLV_wait_input_box(
             taillew*0.3,tailleh*0.45,
             taillew*0.4,tailleh*0.1,
@@ -251,13 +262,14 @@ int main(int argc,char **argv){
             "Nom de la partie : ",
             &nom
           );
-          save(nom,j,mil,o);
+          strcpy(o.partie,nom);
+          save(o.partie,j,mil,o);
+          if(c.y==2 || u=='q'){  //q
+            MLV_free_window();
+            return 1;
+          }
         }
-        if(c.y==2 || u=='q'){  //q
-          if(nom)
-          MLV_free_window();
-          return 1;
-        }
+
         if(c.y==3 || u=='f'){   //f
           if(MLV_is_full_screen()){
             MLV_disable_full_screen();
