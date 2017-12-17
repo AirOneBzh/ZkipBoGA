@@ -35,10 +35,10 @@ int pos_poss(paquet p,int arr[],int c){
     return 1;
   }
   if(p.r[c].val==0){
-    return 1;
+    return 1; //possible
   }
   else{
-    return 0;
+    return 0;//impossible
   }
 
 }
@@ -94,8 +94,19 @@ void init_zone(coord pos[][2]){
   }
 }
 
-void bot(int ia,joueur b,milieu mil,int tasadv[],int nbj,coord *c,coord *r){
-
+void bot(int ia,joueur b,milieu mil,paquet p, int tasadv[],int nbj,coord *c,coord *r){
+  srand(time(NULL));
+  if(pos_poss(paquet p,int arr[],int c)==1){
+    
+  /*tas etape 1
+    reagrde si peut jouer carte dans une pile au HASARD du milieu
+    si OUI il joue puis -> etape1
+    si NON regarde peut_jouer(defausse[i])
+                  si OUI joue carte pile au HASARD -> etape 1
+		  si NON regarde peut_jouer main
+		         si OUI joue carte -> etape 1
+			 si NON defausse au hasard de sa main dans une pile de defausse au hasard
+  */	  
 }
 
 int main(int argc,char **argv){
