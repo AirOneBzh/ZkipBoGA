@@ -35,10 +35,9 @@ int pos_poss(paquet *p,int arr[],int c){
   if(p->r[c].val==1 && arr[1]==-1){  // première carte
     return 1;
   }
-<<<<<<< HEAD
   if(p.r[c].val==0){
     return 1; //possible
-=======
+
 
   if(p->r[c].val==0){   // un joker
     if(arr[1]==-1){
@@ -48,7 +47,6 @@ int pos_poss(paquet *p,int arr[],int c){
       p->r[c].val=p->r[arr[1]].val+1;
     }
     return 1;
->>>>>>> e06d70a8494481fe7e74aee52efb7f99820fd97b
   }
   else{
     return 0;//impossible
@@ -108,8 +106,45 @@ void init_zone(coord pos[][2]){
 
 void bot(int ia,joueur b,milieu mil,paquet p, int tasadv[],int nbj,coord *c,coord *r){
   srand(time(NULL));
-  if(pos_poss(paquet p,int arr[],int c)==1){
-    
+  int i=0,j=0;
+//il regarde son tas
+while(pos_poss(p,mil.m[i],b.tas[1])!=1 && i<=3)i++;
+if(i<=3 && pos_poss(p,mil.m[i],b.tas[1])==1){
+  /***retourne les coord */
+}
+//il regarde sa defausse
+i=0;
+j=0;
+while(pos_poss(p,mil.m[i],b.defausse[j])!=1){
+  if(j<=4)j++;
+  else if(i<=3){
+    j=0;
+    i++;
+  }
+}
+if(pos_poss(i<=3 && p,mil.m[i],b.defausse[j])==1)){
+  //retourne les coords
+}
+//il regarde sa main
+i=0;
+j=1;
+while(pos_poss(p,mil.m[i],b.main[j])!=1)){
+  if(j<=b.main[0])j++;
+  else if(i<=3){
+    j=0;
+    i++;
+  }
+}
+if(pos_poss(p,mil.m[i],b.main[j])==1){
+  //retourne les coords
+}
+//il veut defausser au HASARD
+j=rand()%6;
+srand(time(NULL));
+//coord de main[j]
+j=rand()%6
+//coord de pile de defausse
+}
   /*tas etape 1
     reagrde si peut jouer carte dans une pile au HASARD du milieu
     si OUI il joue puis -> etape1
@@ -118,7 +153,7 @@ void bot(int ia,joueur b,milieu mil,paquet p, int tasadv[],int nbj,coord *c,coor
 		  si NON regarde peut_jouer main
 		         si OUI joue carte -> etape 1
 			 si NON defausse au hasard de sa main dans une pile de defausse au hasard
-  */	  
+  */
 }
 
 void echap(int *u){
