@@ -27,6 +27,7 @@ typedef struct {
   int son;
 } options;
 
+<<<<<<< HEAD
 
 typedef struct {
   milieu m;
@@ -36,6 +37,10 @@ typedef struct {
 
 int menufen(char *nom,options *o,conf *confjeu);
 int fenetre(int l,int h);
+=======
+int menufen(char *nom,options *o); //fenêtre du menu
+int fenetre(int l,int h);//menu du jeu
+>>>>>>> 807f1cdd025185942b213709c91b1615ca9761e8
 #endif
 
 

@@ -4,7 +4,7 @@ typedef struct {
   char ens[20];         // enseigne (couleur) ou permet de différencier cartes
 } carte;
 
-typedef carte reference[162];
+typedef carte reference[162]; //tableau de reference
 
 typedef struct {
   reference r;

@@ -9,12 +9,15 @@
 
 \title{\textbf{ZkipBoGA} Le jeu de SkipBo en C}
 \author{Erwan LE CORNEC, Camil Brahmi}
-\date{}
+\date{\today}
 
 \begin{document}
+
 \maketitle
+
 \newpage
-\paragraph{Règles}
+
+\section{Règles}
 
 Vous avez droit à 5 cinq cartes en main piochées (automatiquement) au début du tour ainsi qu'à 5 piles de défausse personnelle pour monter une pile en valeur et vous approcher de celle de votre tas.
 Pour monter la valeur d'une pile vous devez poser une carte immédiatement successive la pile commence  à 1 et se termine à 12.
@@ -26,14 +29,70 @@ Votre tour ne s'arrête alors que lorsque vous ne pouvez plus ou ne voulez plus 
 
 Vous terminez votre tour en posant une carte dans une de vos piles de défausse.
 
-\paragraph{IA}
+\section{Les modules}
+\subsection{cartes}
+"cartes" contient l'ensemble des fonctions qui manipulent les cartes ainsi que la structure carte et paquet.
+Il faut savoir que dans ce jeu nous avons choisi de rendre chaque carte "unique".
+Donc, une carte est identifiée par sa valeur et son enseigne.
+Par exemple, deux cartes peuvent avoir la même valeur mais jamais la même enseigne.
+Par la suite, les cartes si l'on cherche à accéder à une carte il faudra le faire par le biais d'un tableau de reference.
+D'où la structure paquet, un paquet est identifié par son nombre de cartes contenues dans son tableau de références.
+De cela découle les fonctions suivantes:
+\begin{\begin{enumerate}
+  \item Création d'un paquet
+  \item Mélanger la pioche, très important car dans le jeu on empile et dépile les cartes. Il faut donc mélanger la pioche une fois que les cartes du "milieu" sont retournées dedans.
+  \item Ajouter une carte à une pile
+  \item Retirer une carte d'un paquet
+\end{enumerate}}
+
+\subsection{jeu}
+"jeu" contient toutes les structures du plateau de jeu.
+\begin{enumerate}
+  \item La structure joueur, un joueur est identifié par:
+  \begin{itemize}
+    \item Son nom
+    \item Son numéro qui indique si le joueur est humain ou non.
+    \item Son tas qu'il doit vider pour gagner la partie.
+    \item Ses piles de defausses
+    \item Sa main
+\end{itemize}
+\item Ce qu'on appelle le "milieu" du jeu qui content tout ce que les joueurs disposent en communs:
+\begin{itemize}
+  \item La pioche
+  \item Les piles du milieu
+\end{itemize}}
+\item Les fonctions d'affichage du menu (avant et pendant une partie)
+
+\subsection{interface}
+"interface" conserve comme son nom l'indique la gestion de tout ce qui est graphique à l'aide de la bibliothèque MLV.
+Dans ce module on retrouve une fonction "clé":aff_carte(paquet p,int c,int x,int y) A DEATAILLER
+
+
+\subsection{extras}
+Ce module contient toutes les fonctions liées au son.
+\subsection{save}
+Avec ce module il est possible de charger et sauvegarder une partie.
+
+\subsection{skipbo}
+Enfin le module "skipbo" contient toutes les fonctions qui servent à vérifier si les régles du jeu sont bien respectées.
+\section{Pour aller plus loin...}
+\subsection{IA}
 
 L'IA de ce jeu a été programmé dans le but de faire avancer le jeu. En effet, il ne faut pas que le bot stock toutes les cartes du jeu dans ses piles de défausses car il y a un nombre limité de cartes!
 Nous avons donc établi des priorités parmis ses coups possibles:
--Le tas : il faut quand même essayer de faire gagner le bot.
--La defausse: Si l'option du tas n'est pas disponible il faut qu'il joue les cartes de ses défausses.
--La main
+\begin{enumerate}
+\item -Le tas : il faut quand même essayer de faire gagner le bot.
+\item -La defausse: Si l'option du tas n'est pas disponible il faut qu'il joue les cartes de ses défausses.
+\item -La main
+\end{enumerate}
 Une fois qu'il ne peut plus effectuer l'un de ces choix, comme tous les joueurs, il défausse une carte de sa main choisie au HASARD.
 
+\subsection{Effets sonore}
+Comme vous pouvez le constater, pour rendre l'expérience du jeu plus agréable nous avons décidé d'ajouter quelques bruitages, lors d'un:
+\begin{enumerate}
+  \item Déplacement d'une cartes
+  \item Refus de déplacement d'une carte (mouvement impossible)
+  \item Distribution des cartes
+\end{enumerate}
 
 \end{document}
