@@ -95,7 +95,6 @@ int menufen(char *nom,options *o,conf *confjeu){
   char tmp[3],jba[3];
   int tailleh = MLV_get_desktop_height()*0.65;
   int carre = tailleh /10,i,jbn=4;
-  printf("taille h %d \n",tailleh);
   MLV_create_window("Menu","Menu",((1.5*5)+2)*carre,tailleh);
   o->pourc=95;
   o->full=-1;
@@ -114,10 +113,8 @@ int menufen(char *nom,options *o,conf *confjeu){
   MLV_actualise_window();
   while(1){
     c=wait_inter(1);
-    printf("x%d y%d\n",c.x,c.y);
     if(c.x>-1){
       r=conv_to_menu(c);
-      printf("x%d y%d\n",r.x,r.y);
       if(r.x==1){
         if(r.y==1){
           if(load(confjeu)){
@@ -153,7 +150,6 @@ int menufen(char *nom,options *o,conf *confjeu){
         if(jbn==5){
           jbn=0;
         }
-        printf("jbn %d \n",jbn);
         bouton("Joueurs",3);
         if(jbn==4){
           sous_bouton("Nom",3,1,3,0);

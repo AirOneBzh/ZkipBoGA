@@ -50,10 +50,8 @@ void aff_joueur(paquet p,joueur j){
   MLV_draw_text_with_font(17.42*carre,7.3*carre,s,font,MLV_rgba(13,53,16,255));
   for(i=0;i<5;i++){
     aff_carte(p,j.main[i+1],i*2+6,10);
-    printf("def %d\n",j.defausse[i][1]);
     aff_carte(p,j.defausse[i][1],i*2+5,8);
   }
-  printf("nbcamain %d %d\n",j.main[0],j.main[1]);
   MLV_actualise_window();
 }
 
@@ -143,7 +141,6 @@ coord conv_to_menu(coord c){
   coord r;
   int tailleh = MLV_get_window_height();
   int taillew = MLV_get_window_width();
-  printf("taille w %d \n",taillew);
   int carre = tailleh /10;
   if(c.x>taillew/19.2 && c.x<taillew/19.2+8.5*carre){
     if(c.y>tailleh/4.034 && c.y<tailleh/4.034+carre){

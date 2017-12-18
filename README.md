@@ -17,6 +17,9 @@ Votre tour ne s'arrête alors que lorsque vous ne pouvez plus ou ne voulez plus 
 Vous terminez votre tour en posant une carte dans une de vos piles de défausse.
 
 ### Utilisation / Lancer le jeu
+#### Prérequis
+make
+bibliothèque graphique MLV
 ```
 make
 skipbo
